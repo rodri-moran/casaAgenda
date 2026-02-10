@@ -1,0 +1,48 @@
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <div>
+    <h2 class="mb-0 fw-bold">Reservas</h2>
+    <div class="text-muted-custom d-none d-md-block">
+      Seleccioná un departamento para ver su calendario.
+    </div>
+  </div>
+
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookingFormModal">
+    + Nueva reserva
+  </button>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-md-3">
+    <div class="card p-2">
+      <div class="fw-semibold px-2 py-2">Departamentos</div>
+
+      <div class="list-group list-group-flush">
+        @for (d of apartments; track d.id) {
+          <button
+            type="button"
+            class="list-group-item list-group-item-action"
+            (click)="selectedApartmentId = d.id"
+            [class.active]="selectedApartmentId === d.id"
+          >
+            {{ d.name }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-9">
+    <div class="card p-3">
+      <ng-container *ngIf="selectedApartmentId; else emptyState">
+        <app-booking-calendar [bookings]="filteredBookings"></app-booking-calendar>
+      </ng-container>
+
+      <ng-template #emptyState>
+        <div class="py-5 text-center text-muted-custom">
+          Elegí un departamento para ver sus reservas.
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<app-booking-form-modal [apartments]="apartments"></app-booking-form-modal>

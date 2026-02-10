@@ -1,0 +1,340 @@
+<div
+  class="modal fade"
+  id="bookingFormModal"
+  tabindex="-1"
+  aria-labelledby="bookingFormModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+    <div class="modal-content booking-modal">
+      <div class="modal-header booking-modal__header">
+        <h5 class="modal-title mb-0">Nueva reserva</h5>
+        <button
+          type="button"
+          class="btn-close booking-modal__close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body booking-modal__body">
+        @if (step() === 1) {
+          <form [formGroup]="bookingForm" class="booking-form">
+            <div class="row g-3 w-auto">
+              <!-- Columna izquierda -->
+              <div class="col-12 col-lg-6">
+                <div class="section-card">
+                  <div class="section-title d-flex align-items-center gap-2">
+                    <span class="dot dot--accent"></span>
+                    Reserva
+                  </div>
+
+                  <!-- Departamento -->
+                  <label class="form-label fw-semibold">Departamento</label>
+                  <select
+                    class="form-select form-select-sm booking-input"
+                    formControlName="apartmentId"
+                  >
+                    <option value="">Seleccioná un departamento…</option>
+                    @for (ap of apartments; track ap.id) {
+                      <option [ngValue]="ap.id">{{ ap.name }}</option>
+                    }
+                  </select>
+                  @if (
+                    bookingForm.get('apartmentId')?.touched &&
+                    bookingForm.get('apartmentId')?.hasError('required')
+                  ) {
+                    <div class="text-danger small mt-1">Seleccioná un departamento</div>
+                  }
+
+                  <!-- Precio por persona -->
+                  <div class="mt-2">
+                    <label class="form-label fw-semibold">Precio por persona</label>
+                    <div class="input-group booking-ig">
+                      <span class="input-group-text booking-ig__icon">$</span>
+                      <input
+                        type="number"
+                        class="form-control form-control-sm"
+                        min="0"
+                        formControlName="pricePerPerson"
+                      />
+                    </div>
+                    @if (
+                      bookingForm.get('pricePerPerson')?.touched &&
+                      bookingForm.get('pricePerPerson')?.hasError('min')
+                    ) {
+                      <div class="text-danger small mt-1">El precio no puede ser negativo</div>
+                    }
+                    @if (
+                      bookingForm.get('pricePerPerson')?.touched &&
+                      bookingForm.get('pricePerPerson')?.hasError('required')
+                    ) {
+                      <div class="text-danger small mt-1">Debe indicar el precio por persona</div>
+                    }
+                  </div>
+
+                  <!-- Fechas -->
+                  <div class="mt-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <label class="form-label fw-semibold mb-0">Fechas</label>
+                      <div class="d-flex gap-2">
+                        <span class="badge booking-badge">Días: {{ days() }}</span>
+                        <span class="badge booking-badge booking-badge--accent"
+                          >Noches: {{ nights() }}</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="row g-2 mt-2">
+                      <div class="col-12 col-md-6">
+                        <label class="form-label small text-muted mb-1">Check-in</label>
+                        <input
+                          type="date"
+                          class="form-control form-control-sm booking-input"
+                          formControlName="checkIn"
+                        />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label class="form-label small text-muted mb-1">Check-out</label>
+                        <input
+                          type="date"
+                          class="form-control form-control-sm booking-input"
+                          formControlName="checkOut"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Huésped -->
+                  <div class="mt-2">
+                    <label class="form-label fw-semibold">Nombre y apellido</label>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm booking-input"
+                      formControlName="guestName"
+                      placeholder="Ej: Carmen Pérez"
+                    />
+                    @if (
+                      bookingForm.get('guestName')?.touched &&
+                      bookingForm.get('guestName')?.hasError('required')
+                    ) {
+                      <div class="text-danger small mt-1">El nombre es obligatorio</div>
+                    }
+                    @if (
+                      bookingForm.get('guestName')?.touched &&
+                      bookingForm.get('guestName')?.hasError('maxlength')
+                    ) {
+                      <div class="text-danger small mt-1">Máximo 100 caracteres</div>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <!-- Columna derecha -->
+              <div class="col-12 col-lg-6">
+                <div class="section-card">
+                  <div class="section-title d-flex align-items-center gap-2">
+                    <span class="dot dot--accent2"></span>Pago y detalles
+                  </div>
+
+                  <!-- Personas -->
+                  <label class="form-label fw-semibold">Cantidad de personas</label>
+                  <div class="input-group booking-ig">
+                    <span class="input-group-text booking-ig__icon">👥</span>
+                    <input
+                      type="number"
+                      min="1"
+                      class="form-control form-control-sm booking-input"
+                      formControlName="people"
+                    />
+                  </div>
+                  @if (
+                    bookingForm.get('people')?.touched && bookingForm.get('people')?.hasError('min')
+                  ) {
+                    <div class="text-danger small mt-1">Mínimo 1 persona</div>
+                  }
+                  @if (
+                    bookingForm.get('people')?.touched &&
+                    bookingForm.get('people')?.hasError('required')
+                  ) {
+                    <div class="text-danger small mt-1">Debe indicar la cantidad de personas</div>
+                  }
+
+                  <div class="mt-3">
+                    <label class="form-label fw-semibold">Precio por noche</label>
+                    <div class="input-group booking-ig">
+                      <span class="input-group-text booking-ig__icon">💰</span>
+                      <input
+                        type="number"
+                        class="form-control form-control-sm booking-input"
+                        formControlName="priceNight"
+                        readonly
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Depósito -->
+                  <div class="mt-3">
+                    <label class="form-label fw-semibold">Seña / Depósito</label>
+                    <div class="input-group booking-ig">
+                      <span class="input-group-text booking-ig__icon">$</span>
+                      <input
+                        type="number"
+                        min="0"
+                        class="form-control form-control-sm booking-input"
+                        formControlName="deposit"
+                      />
+                    </div>
+                    @if (
+                      bookingForm.get('deposit')?.touched &&
+                      bookingForm.get('deposit')?.hasError('min')
+                    ) {
+                      <div class="text-danger small mt-1">El depósito no puede ser negativo</div>
+                    }
+                    @if (
+                      bookingForm.get('deposit')?.touched &&
+                      bookingForm.get('deposit')?.hasError('required')
+                    ) {
+                      <div class="text-danger small mt-1">Debe indicar la seña / depósito</div>
+                    }
+                  </div>
+
+                  <!-- Notas
+                <div class="mt-2">
+                  <label class="form-label fw-semibold">Notas (opcional)</label>
+                  <textarea
+                    class="form-control form-control-sm"
+                    rows="3"
+                    formControlName="notes"
+                    placeholder="Ej: llegan tarde / vienen con mascota / etc."
+                  ></textarea>
+                  @if (
+                    bookingForm.get('notes')?.touched &&
+                    bookingForm.get('notes')?.hasError('maxlength')
+                  ) {
+                    <div class="text-danger small mt-1">Máximo 300 caracteres</div>
+                  }
+                </div> -->
+                </div>
+
+                <div class="summary-card mt-3">
+                  <div class="summary-row">
+                    <span class="label">Total</span>
+                    <strong class="value">${{ total() }}</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span class="label">Depósito</span>
+                    <strong class="value">${{ deposit() }}</strong>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="summary-row">
+                    <span class="label">Restante</span>
+                    <strong class="value value--accent">${{ remaining() }}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div
+            *ngIf="bookingForm.hasError('invalidDateRange') && bookingForm.touched"
+            class="alert booking-alert mt-3 mb-0"
+          >
+            La fecha de salida debe ser posterior a la de entrada
+          </div>
+        } @else {
+          <div class="summary-view">
+            <div class="section-card">
+              <div class="section-title d-flex align-items-center gap-2">
+                <span class="dot dot--accent"></span>
+                Revisá la reserva
+              </div>
+
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <div class="kv">
+                    <div class="k">Departamento</div>
+                    <div class="v">{{ summary.apartment }}</div>
+                  </div>
+
+                  <div class="kv">
+                    <div class="k">Fechas</div>
+                    <div class="v">{{ summary.checkIn }} → {{ summary.checkOut }}</div>
+                  </div>
+
+                  <div class="kv">
+                    <div class="k">Noches</div>
+                    <div class="v">{{ summary.nights }}</div>
+                  </div>
+
+                  <div class="kv">
+                    <div class="k">Huésped</div>
+                    <div class="v">{{ summary.guest }}</div>
+                  </div>
+
+                  <div class="kv">
+                    <div class="k">Personas</div>
+                    <div class="v">{{ summary.people }}</div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="kv">
+                    <div class="k">Precio por noche</div>
+                    <div class="v">${{ priceNight() }}</div>
+                  </div>
+
+                  <div class="kv">
+                    <div class="k">Total</div>
+                    <div class="v fw-bold">${{ summary.total }}</div>
+                  </div>
+
+                  <div class="kv">
+                    <div class="k">Depósito</div>
+                    <div class="v">${{ summary.deposit }}</div>
+                  </div>
+
+                  <div class="kv">
+                    <div class="k">Restante</div>
+                    <div class="v fw-bold">${{ summary.remaining }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert booking-alert mt-2 mb-0">
+                Confirmá que las fechas y el departamento son correctos antes de guardar.
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer booking-modal__footer">
+        <button
+          type="button"
+          class="btn btn-outline-light booking-btn"
+          data-bs-dismiss="modal"
+          (click)="clearForm()"
+        >
+          Cancelar
+        </button>
+
+        @if (step() === 1) {
+          <button
+            type="button"
+            class="btn btn-primary booking-btn booking-btn--primary"
+            (click)="goNext()"
+          >
+            Siguiente →
+          </button>
+        } @else {
+          <button type="button" class="btn btn-outline-light booking-btn" (click)="goBack()">
+            ← Volver
+          </button>
+
+          <button type="button" class="btn btn-success booking-btn booking-btn--success">
+            Guardar
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

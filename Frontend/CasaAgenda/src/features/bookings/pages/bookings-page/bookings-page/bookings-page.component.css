@@ -1,0 +1,73 @@
+#bookingFormModal .modal-content {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.booking-form .section-card {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+}
+
+.booking-form .section-card-notes {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 5px;
+  margin-top: 0px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+}
+
+.section-title {
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: 0.2px;
+}
+
+.booking-form .form-label {
+  margin-bottom: 6px;
+}
+
+
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.12);
+  margin: 10px 0;
+}
+
+.booking-modal { border-radius: 18px; }
+
+.booking-form .section-card{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.14);
+}
+
+.section-title{
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.booking-form .form-label{ margin-bottom: 6px; }
+
+.summary-view .kv {
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.summary-view .k {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.summary-view .v {
+  font-size: 14px;
+  font-weight: 600;
+}

@@ -1,0 +1,11 @@
+<div class="d-flex justify-content-end mb-4">
+  <button class="btn btn-primary align-items-end" [routerLink]="['/crearDepartamento']">
+    Nuevo departamento
+  </button>
+</div>
+<div class="row g-3 justify-content-center">
+  <div class="col-md-6" *ngFor="let apt of apartments">
+    <app-apartment-card [apartment]="apt" (open)="goToBookings($event)"></app-apartment-card>
+  </div>
+</div>
+<!-- (open)="goToDetail($event)"> -->

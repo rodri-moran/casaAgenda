@@ -1,0 +1,76 @@
+<header class="navbar app-header px-3">
+  <div class="d-flex align-items-center gap-3 w-100">
+    <button
+      class="btn app-icon-btn d-md-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#sidebar"
+      aria-label="Toggle sidebar"
+    >
+      ☰
+    </button>
+
+    <a [routerLink]="['/']" class="brand text-decoration-none">
+      <span class="brand-mark">🏡</span>
+      <span class="brand-title">CasaAgenda</span>
+      <span class="brand-sub d-none d-sm-inline">Reservas familiares</span>
+    </a>
+
+    <div class="ms-auto d-flex align-items-center gap-2">
+      <!-- Opcional: búsqueda / usuario -->
+      <button class="btn app-icon-btn" type="button" aria-label="Notifications">🔔</button>
+      <button class="btn app-pill-btn" type="button">Nuevo</button>
+    </div>
+  </div>
+</header>
+
+<div class="app-shell">
+  <aside id="sidebar" class="app-sidebar collapse d-md-block">
+    <div class="p-3">
+      <div class="sidebar-title mb-2">Menú</div>
+
+      <ul class="nav nav-pills flex-column gap-1">
+        <li class="nav-item">
+          <a
+            class="nav-link app-link"
+            [routerLink]="['/departamentos']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span class="me-2">📁</span> Departamentos
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link app-link" [routerLink]="['/reservas']" routerLinkActive="active">
+            <span class="me-2">📝</span> Reservas
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link app-link"
+            [routerLink]="['/disponibilidad']"
+            routerLinkActive="active"
+            href="#"
+          >
+            <span class="me-2">🟢</span> Disponibilidad
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link app-link" routerLinkActive="active" href="#">
+            <span class="me-2">🧮</span> Calculadora
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-divider my-3"></div>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+  <app-toast></app-toast>
+</div>
