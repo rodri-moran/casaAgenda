@@ -11,9 +11,8 @@ describe('LayoutComponentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LayoutComponentComponent ]
-    })
-    .compileComponents();
+      declarations: [LayoutComponentComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

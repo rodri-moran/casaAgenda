@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -16,6 +16,8 @@ export class BookingCalendarComponent implements OnInit {
   // pasamos las reservas del depto seleccionado
   @Input() bookings: Booking[] = [];
 
+  @Output() selectedBooking = new EventEmitter<number>();
+
   // configuración del calendario
   calendarOptions: any = {
     locale: esLocale,
@@ -26,10 +28,18 @@ export class BookingCalendarComponent implements OnInit {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      rigt: 'dayGridMonth',
+      right: 'dayGridMonth',
     },
     events: [],
+        eventClick: (info: any) => {
+      // FullCalendar guarda el id en info.event.id (string)
+      const id = Number(info.event.id);
+      if (!Number.isNaN(id)) {
+        this.selectedBooking.emit(id);
+      }
+    },
   };
+
 
   //cuando cambian las reservas, se actualizan los eventos
   ngOnChanges(): void {

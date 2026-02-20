@@ -1,0 +1,139 @@
+<h2 class="mb-0 fw-bold">Calculadora</h2>
+<div class="text-muted-custom">Calcula rápidamente los valores de una posible reserva</div>
+
+<div class="card p-3 mt-4 calc-card">
+  <div class="d-flex align-items-stretch gap-3 calc-layout">
+    <!-- Opciones -->
+    <section class="flex-fill calc-panel">
+      <div class="calc-panel__header">
+        <div class="calc-title">
+          <span class="dot dot--accent"></span>
+          <span>Opciones</span>
+        </div>
+      </div>
+
+      <div class="section-card calc-form">
+        <div class="calc-field">
+          <label class="form-label fw-semibold">Noches</label>
+          <input
+            type="number"
+            class="form-control form-control-sm calc-input"
+            [formField]="calcForm.nights"
+          />
+          @if (calcForm.nights().touched() && calcForm.nights().invalid()) {
+            <div class="text-danger small mt-1">
+              @for (err of calcForm.nights().errors(); track err) {
+                {{ err.message }}
+              }
+            </div>
+          }
+        </div>
+
+        <div class="calc-field">
+          <label class="form-label fw-semibold">Personas</label>
+          <input
+            type="number"
+            class="form-control form-control-sm calc-input"
+            [formField]="calcForm.people"
+          />
+          @if (calcForm.people().touched() && calcForm.people().invalid()) {
+            <div class="text-danger small mt-1">
+              @for (err of calcForm.people().errors(); track err) {
+                {{ err.message }}
+              }
+            </div>
+          }
+        </div>
+
+        <div class="calc-field">
+          <label class="form-label fw-semibold">Precio por persona</label>
+          <div class="input-group booking-ig calc-ig">
+            <span class="input-group-text calc-icon">$</span>
+            <input
+              type="number"
+              class="form-control form-control-sm calc-input"
+              [formField]="calcForm.pricePerPerson"
+            />
+          </div>
+          @if (calcForm.pricePerPerson().touched() && calcForm.pricePerPerson().invalid()) {
+            <div class="text-danger small mt-1">
+              @for (err of calcForm.pricePerPerson().errors(); track err) {
+                {{ err.message }}
+              }
+            </div>
+          }
+        </div>
+
+        <div class="calc-field">
+          <label class="form-label fw-semibold">Depósito / Descuento</label>
+          <div class="input-group booking-ig calc-ig">
+            <span class="input-group-text calc-icon">$</span>
+            <input
+              type="number"
+              class="form-control form-control-sm calc-input"
+              [formField]="calcForm.discount"
+            />
+          </div>
+          @if (calcForm.discount().touched() && calcForm.discount().invalid()) {
+            <div class="text-danger small mt-1">
+              @for (err of calcForm.discount().errors(); track err) {
+                {{ err.message }}
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <div class="vertical-divider calc-divider"></div>
+
+    <!-- Resultados -->
+    <section class="flex-fill calc-panel">
+      <div class="calc-panel__header">
+        <div class="calc-title">
+          <span class="dot dot--accent2"></span>
+          <span>Resultados</span>
+        </div>
+        <span class="calc-chip calc-chip--accent">Estimación</span>
+      </div>
+
+      <div class="summary-card calc-summary">
+        <!-- Top grid -->
+        <div class="calc-grid">
+          <div class="calc-kpi">
+            <div class="k">Noches</div>
+            <div class="v">{{ nights() }}</div>
+          </div>
+          <div class="calc-kpi">
+            <div class="k">Precio por noche</div>
+            <div class="v">${{ priceNight() }}</div>
+          </div>
+        </div>
+
+        <div class="divider calc-divider-h"></div>
+
+        <div class="summary-row">
+          <span class="label">Personas</span>
+          <strong class="value">{{ people() }}</strong>
+        </div>
+
+        <div class="summary-row">
+          <span class="label">Total</span>
+          <strong class="value">${{ total() }}</strong>
+        </div>
+
+        <div class="summary-row">
+          <span class="label">Depósito / Descuento</span>
+          <strong class="value">${{ discount() }}</strong>
+        </div>
+
+        <div class="divider calc-divider-h"></div>
+
+        <div class="summary-row calc-total-row">
+          <span class="label">Restante</span>
+          <strong class="value value--accent">${{ remaining() }}</strong>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

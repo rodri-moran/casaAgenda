@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: Casa Agenda
+  datasource:
+    url: jdbc:h2:mem:casaagendadb
+    driver-class-name: org.h2.Driver
+    username: casaagenda
+    password: casaagenda
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    defer-datasource-initialization: true
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+server:
+  port: 8080

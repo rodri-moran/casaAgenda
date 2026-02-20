@@ -4,6 +4,7 @@ import { ApartmentListComponent } from '../features/apartments/pages/apartment-l
 import { BookingsPageComponent } from '../features/bookings/pages/bookings-page/bookings-page/bookings-page.component';
 import { ApartmentFormComponent } from '../features/apartments/pages/apartment-form/apartmentForm/apartmentForm.component';
 import { AvailabilityPageComponent } from '../features/availability/pages/availability-page/availability-page/availability-page.component';
+import { CalculatorPageComponent } from '../features/calculator/pages/calculator-page/calculator-page/calculator-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'departamentos', pathMatch: 'full' },
@@ -15,6 +16,7 @@ export const routes: Routes = [
       { path: 'reservas', component: BookingsPageComponent },
       { path: 'crearDepartamento', component: ApartmentFormComponent },
       { path: 'disponibilidad', component: AvailabilityPageComponent },
+      { path: 'calculadora', component: CalculatorPageComponent },
     ],
   },
 ];

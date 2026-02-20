@@ -4,7 +4,7 @@ import { dateRangeValidator } from '../../../../../shared/validators/dateRangeVa
 import { Apartment } from '../../../../apartments/models/apartment.model';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { BookingCalculatorService } from '../../../services/booking-calculator.service';
+import { BookingCalculatorService } from '../../../../../shared/services/booking-calculator.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, startWith } from 'rxjs/operators';
 
@@ -134,5 +134,17 @@ export class BookingFormModalComponent implements OnInit {
   total = computed(() => this.calculator.calcTotal(this.priceNight(), this.nights()));
   remaining = computed(() => this.calculator.calcRemaining(this.total(), this.deposit()));
 
-  constructor(private calculator: BookingCalculatorService) {}
+  constructor(private calculator: BookingCalculatorService) {
+    effect(() => {
+      this.bookingForm.patchValue(
+        {
+          priceNight: this.priceNight(),
+          nights: this.nights(),
+          total: this.total(),
+          remaining: this.remaining(),
+        },
+        { emitEvent: false },
+      );
+    });
+  }
 }

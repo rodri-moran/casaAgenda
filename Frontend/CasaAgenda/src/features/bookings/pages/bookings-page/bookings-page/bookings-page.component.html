@@ -6,13 +6,17 @@
     </div>
   </div>
 
-  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookingFormModal">
+  <button
+    class="btn btn-outline-light booking-btn"
+    data-bs-toggle="modal"
+    data-bs-target="#bookingFormModal"
+  >
     + Nueva reserva
   </button>
 </div>
 
 <div class="row g-3">
-  <div class="col-12 col-md-3">
+  <div class="col-12 col-md-2">
     <div class="card p-2">
       <div class="fw-semibold px-2 py-2">Departamentos</div>
 
@@ -20,7 +24,7 @@
         @for (d of apartments; track d.id) {
           <button
             type="button"
-            class="list-group-item list-group-item-action"
+            class="list-group-item list-group-item-action btn-select text-white"
             (click)="selectedApartmentId = d.id"
             [class.active]="selectedApartmentId === d.id"
           >
@@ -31,10 +35,13 @@
     </div>
   </div>
 
-  <div class="col-12 col-md-9">
+  <div class="col-12 col-xl-6">
     <div class="card p-3">
       <ng-container *ngIf="selectedApartmentId; else emptyState">
-        <app-booking-calendar [bookings]="filteredBookings"></app-booking-calendar>
+        <app-booking-calendar
+          [bookings]="filteredBookings"
+          (selectedBooking)="selectedBookingId.set($event)"
+        ></app-booking-calendar>
       </ng-container>
 
       <ng-template #emptyState>
@@ -44,5 +51,23 @@
       </ng-template>
     </div>
   </div>
+  <div class="col-12 col-xl-4">
+    <!-- Panel detalle -->
+    @if (selectedBooking(); as b) {
+      <app-booking-detail-panel
+        [booking]="b"
+        [apartment]="selectedApartment()"
+        (edit)="openEditModal($event)"
+        (cancel)="openCancelDialog($event)"
+        (close)="selectedBookingId.set(null)"
+      />
+    } @else {
+      <div class="card p-3 text-muted-custom">
+        Tocá una reserva del calendario para ver el detalle.
+      </div>
+    }
+  </div>
 </div>
 <app-booking-form-modal [apartments]="apartments"></app-booking-form-modal>
+
+<app-booking-edit-modal [booking]="editingBooking"></app-booking-edit-modal>

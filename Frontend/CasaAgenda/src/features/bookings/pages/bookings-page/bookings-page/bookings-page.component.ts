@@ -1,4 +1,15 @@
-import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  computed,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { BookingCalendarComponent } from '../../../components/booking-calendar/booking-calendar/booking-calendar.component';
 import { Booking } from '../../../models/booking.model';
@@ -7,6 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, startWith } from 'rxjs/operators';
 import { BookingFormModalComponent } from '../../../dialogs/booking-form-modal/booking-form-modal/booking-form-modal.component';
+import { BookingDetailPanelComponent } from '../../../components/booking-detail-panel/booking-detail-panel/booking-detail-panel.component';
 import {
   AbstractControl,
   FormBuilder,
@@ -15,12 +27,22 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { BookingEditModalComponent } from '../../../dialogs/booking-edit-modal/booking-edit-modal/booking-edit-modal.component';
+declare const window: any;
 @Component({
   selector: 'app-bookings-page',
   standalone: true,
   templateUrl: './bookings-page.component.html',
   styleUrls: ['./bookings-page.component.css'],
-  imports: [CommonModule, BookingCalendarComponent, ReactiveFormsModule, BookingFormModalComponent],
+
+  imports: [
+    CommonModule,
+    BookingCalendarComponent,
+    ReactiveFormsModule,
+    BookingFormModalComponent,
+    BookingDetailPanelComponent,
+    BookingEditModalComponent,
+  ],
 })
 export class BookingsPageComponent implements OnInit {
   apartments: Apartment[] = [
@@ -52,12 +74,12 @@ export class BookingsPageComponent implements OnInit {
       checkOut: '2026-02-14',
       people: 2,
       deposit: 20000,
-      remaining: 70000,
-      priceNight: 20000,
+      remaining: 40000,
+      priceNight: 30000,
       pricePerPerson: 15000,
-      total: 90000,
+      total: 60000,
       status: 'pending',
-      nights: 3,
+      nights: 2,
     },
   ];
 
@@ -74,5 +96,25 @@ export class BookingsPageComponent implements OnInit {
       const depto = params.get('depto');
       this.selectedApartmentId = depto ? Number(depto) : null;
     });
+  }
+
+  selectedBookingId = signal<number | null>(null);
+
+  selectedBooking = computed(() => {
+    const id = this.selectedBookingId();
+    return id ? (this.bookings.find((b) => b.id === id) ?? null) : null;
+  });
+
+  selectedApartment = computed(() => {
+    const b = this.selectedBooking();
+    return b ? (this.apartments.find((a) => a.id === b.apartmentId) ?? null) : null;
+  });
+  editingBooking: Booking | null = null;
+  openEditModal(b: Booking) {
+    this.editingBooking = b;
+  }
+
+  openCancelDialog(b: Booking) {
+    console.log('CANCEL', b);
   }
 }
