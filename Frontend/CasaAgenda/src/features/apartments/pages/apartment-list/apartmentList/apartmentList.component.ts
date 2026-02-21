@@ -3,6 +3,7 @@ import { Apartment } from '../../../models/apartment.model';
 import { ApartmentCardComponent } from '../../../components/apartment-card/apartmentCard.component';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { ApartmentService } from '../../../services/apartment.service';
 @Component({
   selector: 'app-apartmentList',
   templateUrl: './apartmentList.component.html',
@@ -11,27 +12,16 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class ApartmentListComponent implements OnInit {
   apartments: Apartment[] = [];
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private service: ApartmentService,
+  ) {}
 
   ngOnInit(): void {
-    this.apartments = [
-      {
-        id: 1,
-        name: 'Departamento Centro',
-        description: 'Monoambiente a 2 cuadras de la peatonal',
-        capacity: 3,
-        imageUrl: 'https://picsum.photos/400/250?random=1',
-        pricePerPerson: 11000,
-      },
-      {
-        id: 2,
-        name: 'Departamento Cascada',
-        description: 'Departamento a 2 cuadras de la cascada',
-        capacity: 5,
-        imageUrl: 'https://picsum.photos/400/250?random=1',
-        pricePerPerson: 10000,
-      },
-    ];
+    this.service.getAll().subscribe((data) => {
+      console.log(data);
+      this.apartments = data;
+    });
   }
 
   goToBookings(apartmentId: number) {

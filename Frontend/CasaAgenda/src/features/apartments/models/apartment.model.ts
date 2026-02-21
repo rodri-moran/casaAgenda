@@ -4,5 +4,4 @@ export interface Apartment {
   description?: string;
   capacity: number;
   imageUrl?: string;
-  pricePerPerson?: number;
 }

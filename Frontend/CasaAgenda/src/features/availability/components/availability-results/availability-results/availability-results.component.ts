@@ -24,7 +24,6 @@ export class AvailabilityResultsComponent implements OnInit {
         description: 'Monoambiente a 2 cuadras de la peatonal',
         capacity: 3,
         imageUrl: 'https://picsum.photos/400/250?random=1',
-        pricePerPerson: 11000,
       },
       {
         id: 2,
@@ -32,7 +31,6 @@ export class AvailabilityResultsComponent implements OnInit {
         description: 'Departamento a 2 cuadras de la cascada',
         capacity: 5,
         imageUrl: 'https://picsum.photos/400/250?random=2',
-        pricePerPerson: 10000,
       },
       {
         id: 3,
@@ -40,7 +38,6 @@ export class AvailabilityResultsComponent implements OnInit {
         description: 'Monoambiente a 2 cuadras de la peatonal',
         capacity: 3,
         imageUrl: 'https://picsum.photos/400/250?random=4',
-        pricePerPerson: 11000,
       },
       {
         id: 4,
@@ -48,7 +45,6 @@ export class AvailabilityResultsComponent implements OnInit {
         description: 'Monoambiente a 2 cuadras de la peatonal',
         capacity: 3,
         imageUrl: 'https://picsum.photos/400/250?random=5',
-        pricePerPerson: 11000,
       },
     ];
   }

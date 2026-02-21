@@ -46,8 +46,8 @@ declare const window: any;
 })
 export class BookingsPageComponent implements OnInit {
   apartments: Apartment[] = [
-    { id: 1, name: 'Depto Centro', capacity: 4, pricePerPerson: 10000 },
-    { id: 2, name: 'Depto Cascada', capacity: 3, pricePerPerson: 15000 },
+    { id: 1, name: 'Depto Centro', capacity: 4 },
+    { id: 2, name: 'Depto Cascada', capacity: 3 },
   ];
 
   bookings: Booking[] = [
