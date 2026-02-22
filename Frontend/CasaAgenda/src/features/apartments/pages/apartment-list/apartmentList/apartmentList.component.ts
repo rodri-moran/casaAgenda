@@ -1,29 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Apartment } from '../../../models/apartment.model';
 import { ApartmentCardComponent } from '../../../components/apartment-card/apartmentCard.component';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ApartmentService } from '../../../services/apartment.service';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
+  standalone: true,
   selector: 'app-apartmentList',
   templateUrl: './apartmentList.component.html',
   styleUrls: ['./apartmentList.component.css'],
   imports: [ApartmentCardComponent, CommonModule, RouterLink],
 })
 export class ApartmentListComponent implements OnInit {
-  apartments: Apartment[] = [];
-  constructor(
-    private router: Router,
-    private service: ApartmentService,
-  ) {}
+  //  apartments: Apartment[] = [];
+  private service = inject(ApartmentService);
+  apartments$ = this.service.getAll();
+
+  constructor(private cdr: ChangeDetectorRef, private router: Router, ){}
 
   ngOnInit(): void {
-    this.service.getAll().subscribe((data) => {
-      console.log(data);
-      this.apartments = data;
-    });
+    //  this.service.getAll().subscribe((data) => {
+    //    this.apartments = data;
+    //     this.cdr.detectChanges();
+    //  });
   }
-
   goToBookings(apartmentId: number) {
     this.router.navigate(['/reservas'], {
       queryParams: { depto: apartmentId },

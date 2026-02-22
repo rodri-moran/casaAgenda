@@ -13,7 +13,7 @@
             </span> -->
           </div>
 
-          <form [formGroup]="apartmentForm" (ngSumbit)="onSubmit()">
+          <form [formGroup]="apartmentForm">
             <!-- Nombre -->
             <div class="mb-3">
               <label class="form-label fw-semibold">Nombre</label>
@@ -80,37 +80,6 @@
                 </div>
               </div>
 
-              <!-- Precio por noche -->
-              <div class="col-12 col-md-6">
-                <label class="form-label fw-semibold">Precio por noche</label>
-                <div class="input-group input-group-lg">
-                  <span class="input-group-text">$</span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    min="0"
-                    step="1000"
-                    placeholder="Ej: 35000"
-                    required
-                    formControlName="priceNight"
-                  />
-                  <div class="w-100 mt-1">
-                    @if (
-                      apartmentForm.get('priceNight')?.touched &&
-                      apartmentForm.get('priceNight')?.hasError('required')
-                    ) {
-                      <div class="text-danger small">Precio requerido</div>
-                    }
-
-                    @if (
-                      apartmentForm.get('priceNight')?.touched &&
-                      apartmentForm.get('priceNight')?.hasError('min')
-                    ) {
-                      <div class="text-danger small">El precio debe ser mayor a 0</div>
-                    }
-                  </div>
-                </div>
-              </div>
             </div>
 
             <!-- Imagen -->
@@ -137,7 +106,7 @@
               <button type="button" class="btn btn-light px-4" (click)="onCancel()">
                 Cancelar
               </button>
-              <button type="submit" class="btn btn-primary px-4">Guardar departamento</button>
+              <button type="submit" (click)="onSubmit()" class="btn btn-primary px-4">Guardar departamento</button>
             </div>
           </form>
         </div>
