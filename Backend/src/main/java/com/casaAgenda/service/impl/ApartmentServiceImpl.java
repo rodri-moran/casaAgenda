@@ -11,10 +11,16 @@ import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ApartmentServiceImpl implements ApartmentService {
@@ -99,6 +105,26 @@ public class ApartmentServiceImpl implements ApartmentService {
         return apartmentRepository.findAvailableApartments(checkIn, checkOut)
                 .stream()
                 .map(this::toResponse).toList();
+    }
+
+    @Override
+    public String upload(MultipartFile file) throws IOException {
+        String original = file.getOriginalFilename();
+        String safeOriginal = original == null ? "file" : original;
+
+        safeOriginal = safeOriginal.replaceAll("\\s+", "_");
+
+        String fileName = UUID.randomUUID() + "_" + safeOriginal;
+
+        Path uploadPath = Paths.get("uploads");
+
+        Files.createDirectories(uploadPath);
+
+        Path filePath = uploadPath.resolve(fileName);
+
+        Files.copy(file.getInputStream(), filePath);
+
+        return "http://localhost:8080/uploads/" + fileName;
     }
 
     private ApartmentResponseDto toResponse(Apartment entity){

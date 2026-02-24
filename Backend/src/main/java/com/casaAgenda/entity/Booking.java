@@ -34,4 +34,5 @@ public class Booking {
     private String notes;
     private Double priceNight;
     private Double pricePerPerson;
+
 }

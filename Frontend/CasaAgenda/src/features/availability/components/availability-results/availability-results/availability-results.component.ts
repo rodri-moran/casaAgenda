@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Apartment } from '../../../../apartments/models/apartment.model';
 import { CommonModule } from '@angular/common';
 import { ApartmentCardComponent } from '../../../../apartments/components/apartment-card/apartmentCard.component';
+import { ApartmentResponseDto } from '../../../../apartments/models/apartmentResponseDto';
+import { AvailabilityService } from '../../../services/availability.service';
 
 @Component({
   selector: 'app-availability-results',
@@ -10,42 +12,25 @@ import { ApartmentCardComponent } from '../../../../apartments/components/apartm
   imports: [CommonModule, ApartmentCardComponent],
 })
 export class AvailabilityResultsComponent implements OnInit {
-  test = true;
-
-  apartments: Apartment[] = [];
-
+  @Input() checkIn = '';
+  @Input() checkOut = '';
+  apartments: ApartmentResponseDto[] | null = null;
+  private service = inject(AvailabilityService);
   constructor() {}
 
-  ngOnInit(): void {
-    this.apartments = [
-      {
-        id: 1,
-        name: 'Departamento Centro',
-        description: 'Monoambiente a 2 cuadras de la peatonal',
-        capacity: 3,
-        imageUrl: 'https://picsum.photos/400/250?random=1',
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!('checkIn' in changes) && !('checkOut' in changes)) return;
+
+    if (!this.checkIn || !this.checkOut) return;
+
+    this.service.getAvailableApartments(this.checkIn, this.checkOut).subscribe({
+      next: (list) => (this.apartments = list),
+      error: (err) => {
+        console.error(err);
+        this.apartments = null;
       },
-      {
-        id: 2,
-        name: 'Departamento Cascada',
-        description: 'Departamento a 2 cuadras de la cascada',
-        capacity: 5,
-        imageUrl: 'https://picsum.photos/400/250?random=2',
-      },
-      {
-        id: 3,
-        name: 'Departamento test',
-        description: 'Monoambiente a 2 cuadras de la peatonal',
-        capacity: 3,
-        imageUrl: 'https://picsum.photos/400/250?random=4',
-      },
-      {
-        id: 4,
-        name: 'Departamento test 2',
-        description: 'Monoambiente a 2 cuadras de la peatonal',
-        capacity: 3,
-        imageUrl: 'https://picsum.photos/400/250?random=5',
-      },
-    ];
+    });
   }
 }

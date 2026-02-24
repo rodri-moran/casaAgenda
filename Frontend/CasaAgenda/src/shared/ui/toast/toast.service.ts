@@ -14,7 +14,7 @@ export class ToastService {
   }
 
   error(message: string, title = 'Error') {
-    this.show('error', message, title, false, 6000);
+    this.show('error', message, title, true, 6000);
   }
 
   info(message: string, title = 'Info') {

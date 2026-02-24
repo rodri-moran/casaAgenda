@@ -4,7 +4,9 @@ import com.casaAgenda.dto.apartment.ApartmentCreateDto;
 import com.casaAgenda.dto.apartment.ApartmentResponseDto;
 import com.casaAgenda.dto.apartment.ApartmentUpdateDto;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,4 +20,5 @@ public interface ApartmentService {
     ApartmentResponseDto safeDelete(Long id);
     List<ApartmentResponseDto> getAllIncludingInactive();
     List<ApartmentResponseDto> getAvailableApartments(LocalDate checkIn, LocalDate checkOut);
+    String upload (MultipartFile file) throws IOException;
 }

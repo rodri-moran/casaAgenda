@@ -1,112 +1,149 @@
-<div class="container py-4">
+<div class="container py-3">
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-8">
-      <div class="card apartment-form-card shadow-sm border-0">
-        <div class="card-body p-4 p-md-5">
-          <div class="d-flex align-items-center justify-content-between mb-4">
-            <div>
-              <h3 class="mb-1 fw-bold">Nuevo departamento</h3>
-              <p class="text-muted-custom mb-0">Cargá los datos para agregar una nueva unidad.</p>
+    <div class="col-12 col-lg-9">
+      <div class="apartment-panel">
+        <!-- Header -->
+        <div class="apartment-panel__header">
+          <div>
+            <div class="apartment-title d-flex align-items-center gap-2">
+              <span class="dot dot--accent"></span>
+              Nuevo departamento
             </div>
-            <!-- <span class="badge rounded-pill text-bg-light border px-3 py-2">
-              <span class="me-1">🏠</span> CasaAgenda
-            </span> -->
+            <div class="apartment-sub text-muted-custom">
+              Cargá los datos para agregar una nueva unidad.
+            </div>
           </div>
 
-          <form [formGroup]="apartmentForm">
-            <!-- Nombre -->
-            <div class="mb-3">
-              <label class="form-label fw-semibold">Nombre</label>
-              <input
-                type="text"
-                class="form-control form-control-lg"
-                formControlName="name"
-                placeholder="Ej: Depto Centro"
-                required
-              />
-              @if (
-                apartmentForm.get('name')?.hasError('required') &&
-                apartmentForm.get('name')?.touched
-              ) {
-                <div class="text-danger small">El nombre es obligatorio</div>
-              }
-            </div>
+          <button type="button" class="btn btn-outline-light apartment-btn" (click)="onCancel()">
+            Cancelar
+          </button>
+        </div>
 
-            <!-- Descripción -->
-            <div class="mb-3">
-              <label class="form-label fw-semibold">Descripción (opcional)</label>
-              <textarea
-                formControlName="description"
-                class="form-control"
-                rows="3"
-                placeholder="Ej: Monoambiente cerca de la peatonal, con cochera..."
-              ></textarea>
-              @if (
-                apartmentForm.get('description')?.hasError('required') &&
-                apartmentForm.get('description')?.touched
-              ) {
-                <div class="text-danger small">La descripción es obligatoria</div>
-              }
-              @if (
-                apartmentForm.get('description')?.hasError('maxlength') &&
-                apartmentForm.get('description')?.touched
-              ) {
-                <div class="text-danger small">Máx. 100 carácteres</div>
-              }
-            </div>
-
+        <!-- Body -->
+        <div class="apartment-panel__body">
+          <form [formGroup]="apartmentForm" (ngSubmit)="onSubmit()">
             <div class="row g-3">
-              <!-- Capacidad -->
-              <div class="col-12 col-md-6">
-                <label class="form-label fw-semibold">Capacidad</label>
-                <div class="input-group input-group-lg">
-                  <span class="input-group-text">👥</span>
+              <!-- Col izquierda -->
+              <div class="col-12 col-lg-6">
+                <div class="section-card">
+                  <div class="section-title d-flex align-items-center gap-2">
+                    <span class="dot dot--accent2"></span>
+                    Datos
+                  </div>
+
+                  <!-- Nombre -->
+                  <label class="form-label fw-semibold">Nombre</label>
                   <input
-                    type="number"
-                    class="form-control"
-                    min="1"
-                    placeholder="Ej: 4"
-                    required
-                    formControlName="capacity"
+                    type="text"
+                    class="form-control form-control-sm apartment-input"
+                    formControlName="name"
+                    placeholder="Ej: Depto Centro"
                   />
-                  <div class="w-100 mt-1">
+                  @if (
+                    apartmentForm.get('name')?.touched &&
+                    apartmentForm.get('name')?.hasError('required')
+                  ) {
+                    <div class="text-danger small mt-1">El nombre es obligatorio</div>
+                  }
+
+                  <!-- Descripción -->
+                  <div class="mt-3">
+                    <label class="form-label fw-semibold">Descripción</label>
+                    <textarea
+                      class="form-control form-control-sm apartment-input"
+                      rows="3"
+                      formControlName="description"
+                      placeholder="Ej: Monoambiente cerca de la peatonal, con cochera..."
+                    ></textarea>
                     @if (
-                      apartmentForm.get('capacity')?.hasError('min') &&
-                      apartmentForm.get('capacity')?.touched
+                      apartmentForm.get('description')?.touched &&
+                      apartmentForm.get('description')?.hasError('required')
                     ) {
-                      <div class="text-danger small">Capacidad mínima: 1</div>
+                      <div class="text-danger small mt-1">La descripción es obligatoria</div>
+                    }
+                    @if (
+                      apartmentForm.get('description')?.touched &&
+                      apartmentForm.get('description')?.hasError('maxlength')
+                    ) {
+                      <div class="text-danger small mt-1">Máx. 100 caracteres</div>
+                    }
+                  </div>
+
+                  <!-- Capacidad -->
+                  <div class="mt-3">
+                    <label class="form-label fw-semibold">Capacidad</label>
+                    <div class="input-group apartment-ig">
+                      <span class="input-group-text apartment-ig__icon">👥</span>
+                      <input
+                        type="number"
+                        min="1"
+                        class="form-control form-control-sm apartment-input"
+                        formControlName="capacity"
+                      />
+                    </div>
+                    @if (
+                      apartmentForm.get('capacity')?.touched &&
+                      apartmentForm.get('capacity')?.hasError('min')
+                    ) {
+                      <div class="text-danger small mt-1">Capacidad mínima: 1</div>
                     }
                   </div>
                 </div>
               </div>
 
-            </div>
+              <!-- Col derecha -->
+              <div class="col-12 col-lg-6">
+                <div class="section-card">
+                  <div class="section-title d-flex align-items-center gap-2">
+                    <span class="dot dot--accent"></span>
+                    Imagen
+                  </div>
 
-            <!-- Imagen -->
-            <div class="mb-3">
-              <label class="form-label fw-semibold">Foto del departamento</label>
+                  <label class="form-label fw-semibold">Foto del departamento</label>
 
-              <input
-                type="file"
-                class="form-control"
-                accept="image/*"
-                (change)="onFileSelected($event)"
-              />
+                  <input
+                    type="file"
+                    class="form-control form-control-sm apartment-input"
+                    accept="image/*"
+                    (change)="onFileSelected($event)"
+                  />
 
-              <!-- Preview -->
-              <div *ngIf="imagePreview" class="preview mt-3">
-                <div class="preview-img">
-                  <img [src]="imagePreview" alt="Preview" />
+                  @if (submitted && !selectedFile) {
+                    <div class="text-danger small mt-1">La foto es obligatoria</div>
+                  }
+
+                  <!-- Preview -->
+                  @if (imagePreview) {
+                    <div class="apartment-preview mt-3">
+                      <div class="apartment-preview__img">
+                        <img [src]="imagePreview" alt="Preview" />
+                      </div>
+                      <div class="apartment-preview__meta">
+                        <div class="fw-semibold">Vista previa</div>
+                        <div class="text-muted-custom small">
+                          Se subirá al guardar el departamento.
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                  <button
+                    type="submit"
+                    class="btn btn-success apartment-btn apartment-btn--success"
+                  >
+                    Guardar departamento
+                  </button>
+                </div>
+
+                <div
+                  *ngIf="apartmentForm.invalid && submitted"
+                  class="alert apartment-alert mt-3 mb-0"
+                >
+                  Revisá los campos obligatorios.
                 </div>
               </div>
-            </div>
-
-            <!-- Acciones -->
-            <div class="d-flex gap-2 justify-content-end mt-4">
-              <button type="button" class="btn btn-light px-4" (click)="onCancel()">
-                Cancelar
-              </button>
-              <button type="submit" (click)="onSubmit()" class="btn btn-primary px-4">Guardar departamento</button>
             </div>
           </form>
         </div>

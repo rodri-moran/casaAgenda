@@ -10,7 +10,10 @@ import com.casaAgenda.repository.BookingRepository;
 import com.casaAgenda.service.BookingService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +28,7 @@ public class BookingServiceImpl implements BookingService {
         Apartment apartment = apartmentRepository.findById(dto.apartmentId())
                 .orElseThrow(() -> new EntityNotFoundException("Apartment with id " + dto.apartmentId() + " not found."));
         if(!isApartmentAvailable(dto.apartmentId(), dto.checkIn(), dto.checkOut())){
-            throw new RuntimeException("Apartment not available");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "APARTMENT_NOT_AVAILABLE");
         }
         if (dto.checkIn() == null || dto.checkOut() == null || !dto.checkOut().isAfter(dto.checkIn())) {
             throw new IllegalArgumentException("CheckOut must be after checkIn");
@@ -59,16 +62,10 @@ public class BookingServiceImpl implements BookingService {
         Long targetApartmentId = dto.apartmentId() != null ? dto.apartmentId()
                 : booking.getApartment().getId();
 
-        boolean available = bookingRepository.isApartmentAvailableForUpdate(
-                targetApartmentId,
-                booking.getId(),
-                finalCheckIn,
-                finalCheckOut
-        );
-
-        if (!available) {
-            throw new IllegalStateException("Apartment not available for those dates");
+        if (!bookingRepository.isApartmentAvailableForUpdate(targetApartmentId, id, finalCheckIn, finalCheckOut)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "APARTMENT_NOT_AVAILABLE");
         }
+
         booking = mapUpdateDtoToEntity(booking, dto);
 
         bookingRepository.save(booking);
@@ -93,8 +90,9 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
         if(booking.getStatus() == Status.CANCELLED){
-            throw new IllegalStateException("Booking already cancelled");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "BOOKING_ALREADY_CANCELLED");
         }
+
         booking.setStatus(Status.CANCELLED);
         bookingRepository.save(booking);
         return toResponse(booking);
@@ -106,9 +104,6 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new EntityNotFoundException("Apartment with id " + apartmentId + " not found."));
         return bookingRepository.isApartmentAvailable(apartmentId, checkIn, checkOut);
     }
-
-
-
     private BookingResponseDto toResponse(Booking entity){
         return new BookingResponseDto(
                 entity.getId(),

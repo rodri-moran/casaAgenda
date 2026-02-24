@@ -18,7 +18,7 @@
         ></button>
       </div>
       <div class="modal-body booking-modal__body">
-        <form [formGroup]="editForm" class="booking-form">
+        <form [formGroup]="editForm" class="booking-form" (ngSubmit)="onSubmit()">
           <div class="row g-3 w-auto">
             <!-- Columna izquierda -->
             <div class="col-12 col-lg-6">
@@ -219,7 +219,7 @@
                 Cancelar
               </button>
 
-              <button type="button" class="btn btn-primary booking-btn booking-btn--primary">
+              <button type="submit" class="btn btn-primary booking-btn booking-btn--primary">
                 Guardar
               </button>
             </div>

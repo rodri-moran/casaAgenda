@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Booking } from '../../../models/booking.model';
 import esLocale from '@fullcalendar/core/locales/es';
+import { BookingResponseDto } from '../../../dtos/bookingResponseDto';
 
 @Component({
   selector: 'app-booking-calendar',
@@ -14,7 +15,7 @@ import esLocale from '@fullcalendar/core/locales/es';
 })
 export class BookingCalendarComponent implements OnInit {
   // pasamos las reservas del depto seleccionado
-  @Input() bookings: Booking[] = [];
+  @Input() bookings: BookingResponseDto[] = [];
 
   @Output() selectedBooking = new EventEmitter<number>();
 
@@ -31,7 +32,7 @@ export class BookingCalendarComponent implements OnInit {
       right: 'dayGridMonth',
     },
     events: [],
-        eventClick: (info: any) => {
+    eventClick: (info: any) => {
       // FullCalendar guarda el id en info.event.id (string)
       const id = Number(info.event.id);
       if (!Number.isNaN(id)) {
@@ -39,7 +40,6 @@ export class BookingCalendarComponent implements OnInit {
       }
     },
   };
-
 
   //cuando cambian las reservas, se actualizan los eventos
   ngOnChanges(): void {
@@ -51,7 +51,7 @@ export class BookingCalendarComponent implements OnInit {
     };
   }
 
-  private bookingsToEvents(bookings: Booking[]) {
+  private bookingsToEvents(bookings: BookingResponseDto[]) {
     return bookings.map((b) => ({
       id: String(b.id),
       title: b.guestName,

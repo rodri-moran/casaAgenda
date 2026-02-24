@@ -18,7 +18,7 @@
       </div>
       <div class="modal-body booking-modal__body">
         @if (step() === 1) {
-          <form [formGroup]="bookingForm" class="booking-form">
+          <form [formGroup]="bookingForm" class="booking-form" (ngSubmit)="onSubmit()">
             <div class="row g-3 w-auto">
               <!-- Columna izquierda -->
               <div class="col-12 col-lg-6">
@@ -101,6 +101,16 @@
                           formControlName="checkOut"
                         />
                       </div>
+                      @if (bookingForm.hasError('invalidDateRange') && bookingForm.touched) {
+                        <div class="text-danger small mt-1">
+                          La fecha de salida debe ser posterior a la de entrada
+                        </div>
+                      }
+                      @if (bookingForm.hasError('notAvailable') && bookingForm.touched) {
+                        <div class="alert booking-alert mt-2 mb-0">
+                          Ese departamento no está disponible en el rango de fechas seleccionado.
+                        </div>
+                      }
                     </div>
                   </div>
 
@@ -234,13 +244,6 @@
               </div>
             </div>
           </form>
-
-          <div
-            *ngIf="bookingForm.hasError('invalidDateRange') && bookingForm.touched"
-            class="alert booking-alert mt-3 mb-0"
-          >
-            La fecha de salida debe ser posterior a la de entrada
-          </div>
         } @else {
           <div class="summary-view">
             <div class="section-card">
@@ -330,7 +333,12 @@
             ← Volver
           </button>
 
-          <button type="button" class="btn btn-success booking-btn booking-btn--success">
+          <button
+            (click)="onSubmit()"
+            type="submit"
+            [disabled]="!bookingForm.valid"
+            class="btn btn-success booking-btn booking-btn--success"
+          >
             Guardar
           </button>
         }

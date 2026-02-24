@@ -21,11 +21,13 @@ import { ApartmentCreateDto } from '../../../models/apartmentCreateDto';
 export class ApartmentFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private service = inject(ApartmentService);
+  fileIsSelected = false;
+  submitted = false;
   apartmentForm = this.fb.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required, Validators.maxLength(100)]],
     capacity: [1, [Validators.min(1)]],
-    imageUrl: ['']
+    imageUrl: [''],
   });
 
   constructor(
@@ -33,21 +35,34 @@ export class ApartmentFormComponent implements OnInit {
     private router: Router,
   ) {}
   onSubmit() {
-    console.log('Entró al submit')
+    this.submitted = true;
     if (this.apartmentForm.invalid) {
-      this.toast.error('Revisá los campos obligatorios.');
       this.apartmentForm.markAllAsTouched();
       return;
     }
 
-    const dto = this.apartmentForm.value;
+    if (this.selectedFile) {
+      this.service.uploadImage(this.selectedFile).subscribe({
+        next: (imageUrl: string) => {
+          console.log('imageurl:', imageUrl);
+          this.apartmentForm.patchValue({ imageUrl });
 
-    this.service.create(dto as ApartmentCreateDto).subscribe({
-      next: (data) => {
-        console.log('creado: ', data)
-        this.toast.success('Departamento creado con éxito.');
-      }
-    })
+          const dto = this.apartmentForm.getRawValue() as ApartmentCreateDto;
+
+          this.service.create(dto).subscribe({
+            next: (data) => {
+              console.log('creado', data);
+              this.toast.success('Departamento creado con éxito.');
+              this.apartmentForm.reset();
+              this.router.navigate(['/departamentos']);
+            },
+            error: (err) => console.error(err),
+          });
+        },
+        error: (err) => console.error(err),
+      });
+      return;
+    }
   }
 
   onCancel() {
@@ -60,18 +75,24 @@ export class ApartmentFormComponent implements OnInit {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
 
-    if (!input.files || input.files.length === 0) return;
+    if (!input.files || input.files.length === 0) {
+      this.selectedFile = undefined;
+      this.fileIsSelected = false;
+      this.imagePreview = undefined;
+      return;
+    }
 
     this.selectedFile = input.files[0];
+    this.fileIsSelected = true;
 
     // Preview
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-    };
-
-    reader.readAsDataURL(this.selectedFile);
+    this.imagePreview = URL.createObjectURL(this.selectedFile);
   }
-
   ngOnInit() {}
+
+  ngOnDestroy() {
+    if (this.imagePreview?.startsWith('blob:')) {
+      URL.revokeObjectURL(this.imagePreview);
+    }
+  }
 }

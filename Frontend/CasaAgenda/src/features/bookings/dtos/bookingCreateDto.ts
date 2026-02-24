@@ -1,5 +1,4 @@
-export interface Booking {
-  id: number;
+export interface BookingCreateDto {
   apartmentId: number;
   checkIn: string;
   checkOut: string;
@@ -8,9 +7,7 @@ export interface Booking {
   deposit: number;
   remaining: number;
   total: number;
-  status: Status;
   notes?: string;
-  nights: number;
   priceNight: number;
   pricePerPerson: number;
 }
