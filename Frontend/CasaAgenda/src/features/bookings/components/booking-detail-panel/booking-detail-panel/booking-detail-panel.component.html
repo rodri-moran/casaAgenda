@@ -33,7 +33,7 @@
   <div class="kv-grid">
     <div class="kv small">
       <div class="k">Noches</div>
-      <div class="v">{{ booking.nights ?? '—' }}</div>
+      <div class="v">{{ nights() ?? '—' }}</div>
     </div>
     <div class="kv small">
       <div class="k">Personas</div>
@@ -122,7 +122,6 @@
     <button
       type="button"
       class="btn btn-outline-danger detail-btn w-100"
-      (click)="cancel.emit(booking)"
       data-bs-toggle="modal"
       data-bs-target="#bookingCancelModal"
     >
@@ -168,7 +167,7 @@
                 Esta acción marcará la reserva como <strong>cancelada</strong>.
               </div>
 
-              <div class="mt-3">
+              <!-- <div class="mt-3">
                 <label class="form-label fw-semibold">Motivo (opcional)</label>
                 <textarea
                   class="form-control form-control-sm booking-input"
@@ -186,7 +185,7 @@
                     >
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -217,7 +216,7 @@
 
   <div class="export-grid">
     <div><span>Departamento:</span> {{ apartment?.name }}</div>
-    <div><span>Noches:</span> {{ booking.nights }}</div>
+    <div><span>Noches:</span> {{ this.nights() }}</div>
     <div><span>Personas:</span> {{ booking.people }}</div>
     <div><span>Precio x noche:</span> ${{ booking.priceNight }}</div>
     <div><span>Total:</span> ${{ booking.total }}</div>

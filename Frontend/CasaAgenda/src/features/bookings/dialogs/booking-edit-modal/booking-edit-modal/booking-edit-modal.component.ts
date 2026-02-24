@@ -1,12 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Booking } from '../../../models/booking.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, startWith } from 'rxjs';
 import { dateRangeValidator } from '../../../../../shared/validators/dateRangeValidator';
 import { BookingCalculatorService } from '../../../../../shared/services/booking-calculator.service';
-
+import { BookingResponseDto } from '../../../dtos/bookingResponseDto';
+import { Status } from '../../../enum/status';
+import { BookingUpdateDto } from '../../../dtos/boookingUpdateDto';
+import { BookingService } from '../../../services/booking.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from '../../../../../shared/ui/toast/toast.service';
+import { Router } from '@angular/router';
+declare const window: any;
 @Component({
   selector: 'app-booking-edit-modal',
   templateUrl: './booking-edit-modal.component.html',
@@ -14,8 +30,13 @@ import { BookingCalculatorService } from '../../../../../shared/services/booking
   imports: [CommonModule, ReactiveFormsModule],
 })
 export class BookingEditModalComponent implements OnInit {
-  @Input() booking: Booking | null = null;
+  @Input() booking: BookingResponseDto | null = null;
+  @Output() updated = new EventEmitter<BookingResponseDto>();
+
   private fb = inject(FormBuilder);
+  private service = inject(BookingService);
+  private toast = inject(ToastService);
+  private router = inject(Router);
 
   editForm = this.fb.group(
     {
@@ -26,7 +47,7 @@ export class BookingEditModalComponent implements OnInit {
       people: [1, [Validators.required, Validators.min(1)]],
       deposit: [0, [Validators.required, Validators.min(0)]],
       pricePerPerson: [0, [Validators.required, Validators.min(0)]],
-      status: ['pending'],
+      status: [Status.PENDING],
 
       // calculados
       priceNight: [{ value: 0, disabled: true }],
@@ -38,6 +59,59 @@ export class BookingEditModalComponent implements OnInit {
     },
     { validators: dateRangeValidator() },
   );
+  onSubmit() {
+    const dto = this.toUpdateDto();
+    this.service.update(this.booking!.id, dto).subscribe({
+      next: (updatedBooking) => {
+        this.toast.success('Reserva .actualizada correctamente');
+        this.updated.emit(updatedBooking);
+        this.closeModal();
+      },
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 409 || this.isNotAvailableError(err)) {
+          this.editForm.setErrors({ notAvailable: true });
+          this.editForm.markAllAsTouched();
+
+          this.toast.error('Departamento no disponible para esas fechas.');
+          return;
+        }
+        this.toast.error('Ocurrió un error al editar la reserva.');
+      },
+    });
+  }
+
+  private isNotAvailableError(err: HttpErrorResponse): boolean {
+    const body: any = err.error;
+    return body?.code === 'APARTMENT_NOT_AVAILABLE' || body?.message?.includes('not available');
+  }
+
+  closeModal() {
+    const modalEl = document.getElementById('bookingEditModal');
+    if (!modalEl) return;
+
+    const modal =
+      window.bootstrap.Modal.getInstance(modalEl) ?? new window.bootstrap.Modal(modalEl);
+
+    modal.hide();
+  }
+
+  private toUpdateDto(): BookingUpdateDto {
+    const v = this.editForm.getRawValue();
+
+    return {
+      apartmentId: Number(v.apartmentId),
+      checkIn: v.checkIn!,
+      checkOut: v.checkOut!,
+      guestName: v.guestName!,
+      people: Number(v.people),
+      deposit: Number(v.deposit),
+      remaining: Number(v.remaining),
+      total: Number(v.total),
+      notes: v.notes ?? undefined,
+      priceNight: Number(v.priceNight),
+      pricePerPerson: Number(v.pricePerPerson),
+    };
+  }
 
   constructor(private calc: BookingCalculatorService) {
     effect(() => {

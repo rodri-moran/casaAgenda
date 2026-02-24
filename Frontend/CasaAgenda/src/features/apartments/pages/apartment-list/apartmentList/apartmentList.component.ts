@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ApartmentService } from '../../../services/apartment.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { catchError, of } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -16,9 +17,17 @@ import { ChangeDetectorRef } from '@angular/core';
 export class ApartmentListComponent implements OnInit {
   //  apartments: Apartment[] = [];
   private service = inject(ApartmentService);
-  apartments$ = this.service.getAll();
+  apartments$ = this.service.getAll().pipe(
+    catchError((error) => {
+      console.error('Error loading apartments', error);
+      return of([]);
+    }),
+  );
 
-  constructor(private cdr: ChangeDetectorRef, private router: Router, ){}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     //  this.service.getAll().subscribe((data) => {

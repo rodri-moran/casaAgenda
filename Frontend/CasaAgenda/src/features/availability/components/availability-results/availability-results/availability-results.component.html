@@ -1,16 +1,17 @@
 <div class="d-flex justify-content-center mt-3">
   <div class="card p-3">
-    @if (apartments.length != 0) {
-      <div class="row g-3 justify-content-start">
+    @if (apartments?.length) {
+      <div class="row g-3 justify-content-center">
         @for (apt of apartments; track $index) {
-          <div class="col-12 col-xl-6 col-xxl-4">
-            <app-apartment-card [apartment]="apt"></app-apartment-card>
+          <div class="col-6">
+            <app-apartment-card
+              [apartment]="apt"
+              (open)="goToBookings($event)"
+            ></app-apartment-card>
           </div>
         }
       </div>
-    }
-    <!-- Poner if check in y check out touched y apartments.length == 0 -->
-    @else {
+    } @else {
       <div class="py-5 text-center text-muted-custom">No hay disponibilidad para esa fecha.</div>
     }
   </div>

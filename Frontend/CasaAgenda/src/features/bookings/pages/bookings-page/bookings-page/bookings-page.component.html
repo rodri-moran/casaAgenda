@@ -21,14 +21,14 @@
       <div class="fw-semibold px-2 py-2">Departamentos</div>
 
       <div class="list-group list-group-flush">
-        @for (d of apartments; track d.id) {
+        @for (apt of (apartments$ | async) ?? []; track apt.id) {
           <button
             type="button"
             class="list-group-item list-group-item-action btn-select text-white"
-            (click)="selectedApartmentId = d.id"
-            [class.active]="selectedApartmentId === d.id"
+            (click)="selectedApartmentId = apt.id"
+            [class.active]="selectedApartmentId === apt.id"
           >
-            {{ d.name }}
+            {{ apt.name }}
           </button>
         }
       </div>
@@ -56,10 +56,11 @@
     @if (selectedBooking(); as b) {
       <app-booking-detail-panel
         [booking]="b"
+        0
         [apartment]="selectedApartment()"
         (edit)="openEditModal($event)"
-        (cancel)="openCancelDialog($event)"
         (close)="selectedBookingId.set(null)"
+        (cancelled)="onBookingCancelled($event)"
       />
     } @else {
       <div class="card p-3 text-muted-custom">
@@ -68,6 +69,14 @@
     }
   </div>
 </div>
-<app-booking-form-modal [apartments]="apartments"></app-booking-form-modal>
+@if (apartments$ | async; as apartments) {
+  <app-booking-form-modal
+    (created)="onBookingCreated($event)"
+    [apartments]="apartments"
+  ></app-booking-form-modal>
+}
 
-<app-booking-edit-modal [booking]="editingBooking"></app-booking-edit-modal>
+<app-booking-edit-modal
+  [booking]="editingBooking"
+  (updated)="onBookingUpdated($event)"
+></app-booking-edit-modal>

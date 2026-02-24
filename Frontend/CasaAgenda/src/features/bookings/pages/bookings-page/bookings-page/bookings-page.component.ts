@@ -27,7 +27,14 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { Subject, switchMap, shareReplay } from 'rxjs';
 import { BookingEditModalComponent } from '../../../dialogs/booking-edit-modal/booking-edit-modal/booking-edit-modal.component';
+import { ApartmentService } from '../../../../apartments/services/apartment.service';
+import { ApartmentResponseDto } from '../../../../apartments/models/apartmentResponseDto';
+import { Observable } from 'rxjs';
+import { BookingService } from '../../../services/booking.service';
+import { BookingResponseDto } from '../../../dtos/bookingResponseDto';
+import { Status } from '../../../enum/status';
 declare const window: any;
 @Component({
   selector: 'app-bookings-page',
@@ -45,53 +52,23 @@ declare const window: any;
   ],
 })
 export class BookingsPageComponent implements OnInit {
-  apartments: Apartment[] = [
-    { id: 1, name: 'Depto Centro', capacity: 4 },
-    { id: 2, name: 'Depto Cascada', capacity: 3 },
-  ];
+  private apartmentService = inject(ApartmentService);
+  private service = inject(BookingService);
+  apartments$: Observable<ApartmentResponseDto[]> = this.apartmentService.getAll();
+  bookings = signal<BookingResponseDto[]>([]);
 
-  bookings: Booking[] = [
-    {
-      id: 1,
-      apartmentId: 1,
-      guestName: 'Juan Pérez',
-      checkIn: '2026-02-10',
-      checkOut: '2026-02-15',
-      people: 3,
-      deposit: 50000,
-      remaining: 100000,
-      priceNight: 30000,
-      pricePerPerson: 10000,
-      total: 150000,
-      status: 'pending',
-      nights: 5,
-    },
-    {
-      id: 2,
-      apartmentId: 2,
-      guestName: 'Ana Gómez',
-      checkIn: '2026-02-12',
-      checkOut: '2026-02-14',
-      people: 2,
-      deposit: 20000,
-      remaining: 40000,
-      priceNight: 30000,
-      pricePerPerson: 15000,
-      total: 60000,
-      status: 'pending',
-      nights: 2,
-    },
-  ];
+  apartments = toSignal(this.apartments$, { initialValue: [] });
 
   selectedApartmentId: number | null = null;
 
-  get filteredBookings(): Booking[] {
-    if (!this.selectedApartmentId) return [];
-    return this.bookings.filter((b) => b.apartmentId === this.selectedApartmentId);
-  }
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.service.getByStatus([Status.ACTIVE, Status.PENDING]).subscribe({
+      next: (list) => this.bookings.set(list),
+      error: (err) => console.error(err),
+    });
+
     this.route.queryParamMap.subscribe((params) => {
       const depto = params.get('depto');
       this.selectedApartmentId = depto ? Number(depto) : null;
@@ -102,19 +79,48 @@ export class BookingsPageComponent implements OnInit {
 
   selectedBooking = computed(() => {
     const id = this.selectedBookingId();
-    return id ? (this.bookings.find((b) => b.id === id) ?? null) : null;
+    const bks = this.bookings();
+    return id ? (bks.find((b) => b.id === id) ?? null) : null;
   });
+
+  get filteredBookings(): BookingResponseDto[] {
+    if (!this.selectedApartmentId) return [];
+    const bks = this.bookings();
+    return bks.filter((b) => b.apartmentId === this.selectedApartmentId);
+  }
 
   selectedApartment = computed(() => {
     const b = this.selectedBooking();
-    return b ? (this.apartments.find((a) => a.id === b.apartmentId) ?? null) : null;
+    const apts = this.apartments();
+    return b ? (apts.find((a) => a.id === b.apartmentId) ?? null) : null;
   });
-  editingBooking: Booking | null = null;
-  openEditModal(b: Booking) {
+  editingBooking: BookingResponseDto | null = null;
+  openEditModal(b: BookingResponseDto) {
     this.editingBooking = b;
   }
 
-  openCancelDialog(b: Booking) {
-    console.log('CANCEL', b);
+  updateList(cancelled: BookingResponseDto) {
+    this.bookings.update((list) => list.filter((b) => b.id !== cancelled.id));
+    this.selectedBookingId.set(null);
+    if (this.editingBooking?.id === cancelled.id) {
+      this.editingBooking = null;
+    }
+  }
+
+  onBookingCreated(b: BookingResponseDto) {
+    this.bookings.update((current) => [b, ...current]);
+
+    // this.selectedBookingId.set(b.id);
+  }
+
+  onBookingUpdated(updated: BookingResponseDto) {
+    this.bookings.update((list) => list.map((b) => (b.id === updated.id ? updated : b)));
+
+    this.selectedBookingId.set(updated.id);
+  }
+
+  onBookingCancelled(cancelled: BookingResponseDto) {
+    this.bookings.update((list) => list.filter((b) => b.id !== cancelled.id));
+    this.selectedBookingId.set(null);
   }
 }

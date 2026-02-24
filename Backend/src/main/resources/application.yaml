@@ -1,4 +1,10 @@
 spring:
+  servlet:
+    multipart:
+      #Tamaño máximo por archivo
+      max-file-size: 10MB
+      # Tamaño máximo total del request (form + archivo)
+      max-request-size: 10MB
   application:
     name: Casa Agenda
   datasource:

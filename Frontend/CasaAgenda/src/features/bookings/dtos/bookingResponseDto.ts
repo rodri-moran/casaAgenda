@@ -1,4 +1,6 @@
-export interface Booking {
+import { Status } from '../enum/status';
+
+export interface BookingResponseDto {
   id: number;
   apartmentId: number;
   checkIn: string;
@@ -9,8 +11,7 @@ export interface Booking {
   remaining: number;
   total: number;
   status: Status;
-  notes?: string;
-  nights: number;
+  notes: string;
   priceNight: number;
   pricePerPerson: number;
 }

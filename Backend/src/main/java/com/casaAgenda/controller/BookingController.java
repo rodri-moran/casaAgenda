@@ -23,7 +23,7 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.update(id, dto));
     }
     @GetMapping 
-    public ResponseEntity<List<BookingResponseDto>> getByStatus(@RequestBody List<Status> statuses){
+    public ResponseEntity<List<BookingResponseDto>> getByStatus(@RequestParam List<Status> statuses){
         return ResponseEntity.ok(bookingService.getByStatus(statuses));
     }
     @GetMapping("/{id}")

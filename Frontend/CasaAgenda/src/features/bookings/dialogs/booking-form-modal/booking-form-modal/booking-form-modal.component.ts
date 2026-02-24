@@ -1,4 +1,17 @@
-import { Component, OnInit, signal, inject, Input, computed, effect } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal,
+  inject,
+  Input,
+  computed,
+  effect,
+  Inject,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { dateRangeValidator } from '../../../../../shared/validators/dateRangeValidator';
 import { Apartment } from '../../../../apartments/models/apartment.model';
@@ -7,7 +20,14 @@ import { CommonModule } from '@angular/common';
 import { BookingCalculatorService } from '../../../../../shared/services/booking-calculator.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, startWith } from 'rxjs/operators';
+import { BookingService } from '../../../services/booking.service';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { ToastService } from '../../../../../shared/ui/toast/toast.service';
+import { BookingCreateDto } from '../../../dtos/bookingCreateDto';
+import { BookingResponseDto } from '../../../dtos/bookingResponseDto';
+import { HttpErrorResponse } from '@angular/common/http';
 
+declare const window: any;
 @Component({
   selector: 'app-booking-form-modal',
   templateUrl: './booking-form-modal.component.html',
@@ -15,7 +35,11 @@ import { map, startWith } from 'rxjs/operators';
   imports: [CommonModule, ReactiveFormsModule],
 })
 export class BookingFormModalComponent implements OnInit {
+  private service = inject(BookingService);
+  private toast = inject(ToastService);
+  private fb = inject(FormBuilder);
   @Input() apartments!: Apartment[];
+  @Output() created = new EventEmitter<BookingResponseDto>();
 
   ngOnInit() {}
   step = signal<1 | 2>(1);
@@ -30,7 +54,6 @@ export class BookingFormModalComponent implements OnInit {
   goBack() {
     this.step.set(1);
   }
-  private fb = inject(FormBuilder);
 
   bookingForm = this.fb.group(
     {
@@ -146,5 +169,70 @@ export class BookingFormModalComponent implements OnInit {
         { emitEvent: false },
       );
     });
+  }
+
+  onSubmit() {
+    if (this.bookingForm.invalid) {
+      this.bookingForm.markAllAsTouched();
+      return;
+    }
+
+    const dto = this.toCreateDto();
+    this.service.create(dto).subscribe({
+      next: (createdBooking) => {
+        this.created.emit(createdBooking);
+        this.closeModal();
+        this.clearForm();
+        this.toast.success('Reserva creada correctamente.');
+      },
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 409 || this.isNotAvailableError(err)) {
+          this.bookingForm.setErrors({ notAvailable: true });
+          this.bookingForm.markAllAsTouched();
+
+          this.toast.error('Departamento no disponible para esas fechas.');
+          this.step.set(1);
+          return;
+        }
+
+        this.toast.error('Ocurrió un error al crear la reserva.');
+        console.error(err);
+      },
+    });
+  }
+
+  private isNotAvailableError(err: HttpErrorResponse): boolean {
+    const body: any = err.error;
+    return body?.code === 'APARTMENT_NOT_AVAILABLE' || body?.message?.includes('not available');
+  }
+
+  private toCreateDto(): BookingCreateDto {
+    const v = this.bookingForm.getRawValue();
+
+    return {
+      apartmentId: Number(v.apartmentId),
+      checkIn: v.checkIn!,
+      checkOut: v.checkOut!,
+      guestName: v.guestName!,
+      people: Number(v.people),
+      deposit: Number(v.deposit),
+      remaining: Number(v.remaining),
+      total: Number(v.total),
+      notes: v.notes ?? undefined,
+      priceNight: Number(v.priceNight),
+      pricePerPerson: Number(v.pricePerPerson),
+    };
+  }
+  @ViewChild('bookingFormModal') modalCloseElement: ElementRef | undefined;
+
+  closeModal() {
+    const modalElement = document.getElementById('bookingFormModal');
+
+    if (!modalElement) return;
+
+    const modalInstance =
+      window.bootstrap.Modal.getInstance(modalElement) ?? new window.bootstrap.Modal(modalElement);
+
+    modalInstance.hide();
   }
 }

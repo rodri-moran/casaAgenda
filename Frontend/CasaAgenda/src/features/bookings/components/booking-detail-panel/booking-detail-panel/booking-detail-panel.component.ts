@@ -3,6 +3,7 @@ import {
   computed,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnInit,
   Output,
@@ -12,30 +13,81 @@ import { Booking } from '../../../models/booking.model';
 import { Apartment } from '../../../../apartments/models/apartment.model';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { BookingCalculatorService } from '../../../../../shared/services/booking-calculator.service';
+import { BookingResponseDto } from '../../../dtos/bookingResponseDto';
+import { BookingService } from '../../../services/booking.service';
+import { ToastService } from '../../../../../shared/ui/toast/toast.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
+declare const window: any;
 @Component({
   selector: 'app-booking-detail-panel',
   templateUrl: './booking-detail-panel.component.html',
   styleUrls: ['./booking-detail-panel.component.css'],
 })
 export class BookingDetailPanelComponent implements OnInit {
+  private calc = inject(BookingCalculatorService);
+  private service = inject(BookingService);
+  private toast = inject(ToastService);
+
   constructor() {}
 
   ngOnInit() {}
-  @Input({ required: true }) booking!: Booking;
+  @Input({ required: true }) booking!: BookingResponseDto;
   @Input() apartment: Apartment | null = null;
 
   @Output() close = new EventEmitter<void>();
-  @Output() edit = new EventEmitter<Booking>();
-  @Output() cancel = new EventEmitter<Booking>();
-  @Output() export = new EventEmitter<Booking>();
+  @Output() edit = new EventEmitter<BookingResponseDto>();
+  @Output() cancelled = new EventEmitter<BookingResponseDto>();
+  @Output() export = new EventEmitter<BookingResponseDto>();
 
   title = computed(() => this.apartment?.name ?? `Depto #${this.booking?.apartmentId ?? '—'}`);
+
+  nights = computed(() => this.calc.calcNights(this.booking.checkIn, this.booking.checkOut));
+  days = computed(() => this.nights() + 1);
+  priceNight = computed(() =>
+    this.calc.calcPriceNight(this.booking.pricePerPerson, this.booking.people),
+  );
+  total = computed(() => this.calc.calcTotal(this.priceNight(), this.nights()));
+  remaining = computed(() => this.calc.calcRemaining(this.total(), this.booking.deposit));
 
   // helpers simples para mostrar fechas mas esteticas sin librerias
   fmt = (iso: string | null | undefined) => (iso ? iso.split('-').reverse().join('/') : '—');
 
-  confirmCancel() {}
+  confirmCancel() {
+    this.service.cancel(this.booking.id).subscribe({
+      next: (bookingCancelled) => {
+        this.toast.success('Reserva cancelada correctamente.');
+        this.closeModal();
+        this.cancelled.emit(bookingCancelled);
+      },
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 409 || this.isAlreadyCancelledError(err)) {
+          this.toast.error('Esta reserva ya está cancelada');
+          return;
+        }
+        this.toast.error('Ocurrió un error al cancelar la reserva.');
+        console.error(err);
+      },
+    });
+  }
+  isAlreadyCancelledError(err: HttpErrorResponse): boolean {
+    const body: any = err.error;
+    return (
+      body?.code === 'BOOKING_ALREADY_CANCELLED' || body?.message?.includes('already cancelled')
+    );
+  }
+
+  closeModal() {
+    const modalElement = document.getElementById('bookingCancelModal');
+    if (!modalElement) return;
+
+    const modalInstance =
+      window.bootstrap.Modal.getInstance(modalElement) ?? new window.bootstrap.Modal(modalElement);
+
+    modalInstance.hide();
+  }
+
   copyText() {
     const text = this.buildText();
     navigator.clipboard.writeText(text);
@@ -68,10 +120,10 @@ export class BookingDetailPanelComponent implements OnInit {
 *Total=* $${b.total}
 *Seña=* $${b.deposit}
 *Resto=* $${b.remaining}
-*Días=* ${b.nights + 1}
-*Noches=* ${b.nights}
+*Días=* ${this.nights() + 1}
+*Noches=* ${this.nights()}
 *Personas=* ${b.people}
-* x Noche=* $${b.priceNight}
+* x Noche=* $${this.priceNight()}
 `;
   }
 
@@ -275,7 +327,7 @@ export class BookingDetailPanelComponent implements OnInit {
 
       <div class="box">
         <div class="k">Noches</div>
-        <div class="v">${safe(b.nights)}</div>
+        <div class="v">${safe(this.nights())}</div>
       </div>
 
       <div class="box">

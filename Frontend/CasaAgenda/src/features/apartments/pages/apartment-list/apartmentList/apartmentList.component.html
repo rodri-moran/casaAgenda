@@ -1,5 +1,3 @@
-
-
 <div class="d-flex justify-content-end mb-4">
   <button
     class="btn btn-outline-light align-items-end booking-btn"
@@ -9,10 +7,16 @@
   </button>
 </div>
 <div class="row g-3 justify-content-center">
-  @for (apt of (apartments$ | async); track apt.id) {
-  <div class="col-md-6">    
-    <app-apartment-card [apartment]="apt" (open)="goToBookings($event)"></app-apartment-card>
-  </div>
+  @if (apartments$ | async; as apartments) {
+    @if (apartments.length === 0) {
+      <div class="text-center text-white mt-5">No hay departamentos</div>
+    } @else {
+      @for (apt of apartments; track apt.id) {
+        <div class="col-md-6">
+          <app-apartment-card [apartment]="apt" (open)="goToBookings($event)"></app-apartment-card>
+        </div>
+      }
+    }
   }
 </div>
 <!-- (open)="goToDetail($event)"> -->

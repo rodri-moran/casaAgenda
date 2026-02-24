@@ -1,0 +1,15 @@
+.apartment-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.apartment-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.apartment-card button {
+  margin-top: auto;
+}

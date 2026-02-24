@@ -1,54 +1,162 @@
-.apartment-form-card {
-  border-radius: 18px;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
+.apartment-panel {
+  border-radius: var(--radius, 18px);
+  overflow: hidden;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  background:
+    radial-gradient(900px 500px at 0% 0%, rgba(20, 184, 166, 0.1), transparent 55%),
+    radial-gradient(700px 450px at 100% 0%, rgba(167, 139, 250, 0.1), transparent 50%),
+    rgba(11, 18, 32, 0.92);
+  box-shadow: var(--shadow, 0 12px 30px rgba(0, 0, 0, 0.35));
+  backdrop-filter: blur(14px);
+  color: var(--text, rgba(255, 255, 255, 0.92));
 }
 
-.apartment-form-card .form-control,
-.apartment-form-card .input-group-text,
-.apartment-form-card textarea {
+.apartment-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+}
+
+.apartment-panel__body {
+  padding: 16px;
+}
+
+.apartment-panel__footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+}
+
+.apartment-title {
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-size: 18px;
+}
+
+.apartment-sub {
+  margin-top: 2px;
+}
+
+.section-card {
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+.section-title {
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: 0.2px;
+  color: var(--text, rgba(255, 255, 255, 0.92));
+}
+
+.apartment-input {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: var(--text, rgba(255, 255, 255, 0.92)) !important;
   border-radius: 12px;
 }
 
-.apartment-form-card .form-control:focus,
-.apartment-form-card textarea:focus {
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
-  border-color: rgba(13, 110, 253, 0.45);
+.apartment-input::placeholder {
+  color: rgba(255, 255, 255, 0.45) !important;
 }
 
-.preview {
+.apartment-input:focus {
+  border-color: rgba(20, 184, 166, 0.55) !important;
+  box-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.18) !important;
+}
+
+.apartment-ig .apartment-ig__icon {
+  min-width: 44px;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text, rgba(255, 255, 255, 0.92));
+  border-radius: 12px 0 0 12px;
+}
+
+.apartment-ig .form-control {
+  border-left: 0 !important;
+}
+
+.apartment-preview {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   align-items: center;
   padding: 12px;
-  border: 1px dashed rgba(0, 0, 0, 0.15);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
   border-radius: 14px;
-  background: rgba(13, 110, 253, 0.03);
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.preview-img {
-  width: 140px;
-  height: 86px;
+.apartment-preview__img {
+  width: 160px;
+  height: 96px;
   border-radius: 12px;
   overflow: hidden;
   flex: 0 0 auto;
-  background: #f2f4f8;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
 }
 
-.preview-img img {
+.apartment-preview__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.toast {
+.apartment-preview__meta {
+  min-width: 0;
+}
+
+.apartment-hint {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+}
+
+.apartment-btn {
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.apartment-btn--success {
+  background: rgba(34, 197, 94, 0.22);
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+.apartment-btn--success:hover {
+  background: rgba(34, 197, 94, 0.28);
+}
+
+.text-muted-custom {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  display: inline-block;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
+}
+
+.dot--accent {
+  background: #14b8a6;
+}
+
+.dot--accent2 {
+  background: #a78bfa;
+}
+
+.apartment-alert {
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  background: rgba(251, 113, 133, 0.1);
+  color: rgba(255, 255, 255, 0.88);
   border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
-
-.card-body {
-  color: rgb(255, 255, 255);
-  border-radius: 15px;
-  background-color: #303d5a;
-}
-

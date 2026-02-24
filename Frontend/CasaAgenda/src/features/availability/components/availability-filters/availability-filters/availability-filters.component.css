@@ -1,13 +1,16 @@
-.availability-input
-{
-  background: rgba(255,255,255,0.06) !important;
-  border: 1px solid rgba(255,255,255,0.14) !important;
+.availability-input {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
   color: var(--text) !important;
   border-radius: 12px;
 }
-.availability-input::placeholder{ color: rgba(255,255,255,0.45); }
-.availability-input:focus
-{
-  box-shadow: 0 0 0 .25rem rgba(20,184,166,0.18);
-  border-color: rgba(20,184,166,0.55) !important;
+.availability-input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+.availability-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.18);
+  border-color: rgba(20, 184, 166, 0.55) !important;
+}
+.availability-input {
+  cursor: pointer;
 }
