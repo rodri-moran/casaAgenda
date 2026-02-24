@@ -3,11 +3,12 @@
     @if (apartments?.length) {
       <div class="row g-3 justify-content-center">
         @for (apt of apartments; track $index) {
-          <div class="col-6">
-            <app-apartment-card
-              [apartment]="apt"
-              (open)="goToBookings($event)"
-            ></app-apartment-card>
+          <div
+            class="d-flex"
+            [class.col-12]="apartments?.length === 1"
+            [class.col-md-6]="apartments?.length !== 1"
+          >
+            <app-apartment-card class="w-100" [apartment]="apt"></app-apartment-card>
           </div>
         }
       </div>

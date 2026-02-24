@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ApartmentCardComponent } from '../../../../apartments/components/apartment-card/apartmentCard.component';
 import { ApartmentResponseDto } from '../../../../apartments/models/apartmentResponseDto';
 import { AvailabilityService } from '../../../services/availability.service';
+
 import { Router } from '@angular/router';
 
 @Component({
