@@ -1,0 +1,45 @@
+<div class="login-page d-flex align-items-center justify-content-center">
+  <div class="login-card">
+    <div class="text-center mb-3">
+      <div class="fs-2">🏡</div>
+      <h4 class="fw-semibold mb-0">CasaAgenda</h4>
+      <div class="text-muted small">Acceso familiar</div>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Usuario</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="username"
+          autocomplete="username"
+        />
+        @if (
+          loginForm.get('username')?.touched && loginForm.get('username')?.hasError('required')
+        ) {
+          <div class="text-danger small mt-1">El usuario es obligatorio</div>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Contraseña</label>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+          autocomplete="current-password"
+        />
+        @if (
+          loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')
+        ) {
+          <div class="text-danger small mt-1">La contraseña es obligatoria</div>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-success w-100" [disabled]="loading">
+        {{ loading ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+  </div>
+</div>

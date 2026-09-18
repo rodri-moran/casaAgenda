@@ -99,30 +99,24 @@
                     Imagen
                   </div>
 
-                  <label class="form-label fw-semibold">Foto del departamento</label>
+                  <label class="form-label fw-semibold">Link de la foto (opcional)</label>
 
                   <input
-                    type="file"
+                    type="text"
                     class="form-control form-control-sm apartment-input"
-                    accept="image/*"
-                    (change)="onFileSelected($event)"
+                    formControlName="imageUrl"
+                    placeholder="Ej: link de Google Fotos/Drive"
                   />
 
-                  @if (submitted && !selectedFile) {
-                    <div class="text-danger small mt-1">La foto es obligatoria</div>
-                  }
-
                   <!-- Preview -->
-                  @if (imagePreview) {
+                  @if (apartmentForm.get('imageUrl')?.value) {
                     <div class="apartment-preview mt-3">
                       <div class="apartment-preview__img">
-                        <img [src]="imagePreview" alt="Preview" />
+                        <img [src]="apartmentForm.get('imageUrl')?.value" alt="Preview" />
                       </div>
                       <div class="apartment-preview__meta">
                         <div class="fw-semibold">Vista previa</div>
-                        <div class="text-muted-custom small">
-                          Se subirá al guardar el departamento.
-                        </div>
+                        <div class="text-muted-custom small">Así se va a ver la foto.</div>
                       </div>
                     </div>
                   }

@@ -19,6 +19,7 @@
     <div class="ms-auto d-flex align-items-center gap-2">
       <button class="btn app-icon-btn" type="button" aria-label="Notifications">🔔</button>
       <button class="btn app-pill-btn" type="button">Nuevo</button>
+      <button class="btn app-icon-btn" type="button" aria-label="Salir" title="Salir" (click)="logout()">🚪</button>
     </div>
   </div>
 </header>
@@ -71,5 +72,4 @@
   <main class="app-main">
     <router-outlet></router-outlet>
   </main>
-  <app-toast></app-toast>
 </div>

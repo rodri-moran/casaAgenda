@@ -5,12 +5,16 @@ import { BookingsPageComponent } from '../features/bookings/pages/bookings-page/
 import { ApartmentFormComponent } from '../features/apartments/pages/apartment-form/apartmentForm/apartmentForm.component';
 import { AvailabilityPageComponent } from '../features/availability/pages/availability-page/availability-page/availability-page.component';
 import { CalculatorPageComponent } from '../features/calculator/pages/calculator-page/calculator-page/calculator-page.component';
+import { LoginComponent } from '../features/auth/pages/login/login.component';
+import { authGuard } from '../core/auth/auth.guard';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
   { path: '', redirectTo: 'departamentos', pathMatch: 'full' },
   {
     path: '',
     component: LayoutComponentComponent,
+    canActivate: [authGuard],
     children: [
       { path: 'departamentos', component: ApartmentListComponent },
       { path: 'reservas', component: BookingsPageComponent },

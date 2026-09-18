@@ -1,3 +1,5 @@
+import { Status } from '../enum/status';
+
 export interface Booking {
   id: number;
   apartmentId: number;
