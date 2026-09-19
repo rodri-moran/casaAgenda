@@ -3,7 +3,7 @@
     <div>
       <div class="detail-title d-flex align-items-center gap-2">
         <span class="dot dot--accent2"></span>
-        <span>La reserva</span>
+        <span>Detalle</span>
       </div>
       <div class="detail-sub text-muted-custom">{{ title() }}</div>
     </div>
@@ -20,26 +20,17 @@
 
   <div class="divider my-3"></div>
 
-  @if (booking.status === Status.ACTIVE) {
-    <span class="detail-badge detail-badge--active">Están acá ahora</span>
-  } @else if (booking.status === Status.PENDING) {
-    <span class="detail-badge detail-badge--pending">Vienen pronto</span>
-  }
-
-  <h3 class="detail-guest">{{ booking.guestName || '—' }}</h3>
-
-  <div class="kv-grid">
-    <div class="kv small">
-      <div class="k">Entra</div>
-      <div class="v">{{ fmt(booking.checkIn) }}</div>
-    </div>
-    <div class="kv small">
-      <div class="k">Se va</div>
-      <div class="v">{{ fmt(booking.checkOut) }}</div>
-    </div>
+  <div class="kv">
+    <div class="k">Huésped</div>
+    <div class="v">{{ booking.guestName || '—' }}</div>
   </div>
 
-  <div class="kv-grid mt-2">
+  <div class="kv">
+    <div class="k">Fechas</div>
+    <div class="v">{{ fmt(booking.checkIn) }} → {{ fmt(booking.checkOut) }}</div>
+  </div>
+
+  <div class="kv-grid">
     <div class="kv small">
       <div class="k">Noches</div>
       <div class="v">{{ nights() ?? '—' }}</div>
@@ -54,7 +45,7 @@
 
   <div class="money">
     <div class="rowx">
-      <span class="label">Precio por noche</span>
+      <span class="label">Precio / noche</span>
       <strong class="value">${{ booking.priceNight ?? 0 }}</strong>
     </div>
     <div class="rowx">
@@ -62,12 +53,12 @@
       <strong class="value">${{ booking.total ?? 0 }}</strong>
     </div>
     <div class="rowx">
-      <span class="label">Ya pagó (seña)</span>
+      <span class="label">Depósito</span>
       <strong class="value">${{ booking.deposit ?? 0 }}</strong>
     </div>
     <div class="divider my-2"></div>
     <div class="rowx">
-      <span class="label">Falta pagar</span>
+      <span class="label">Restante</span>
       <strong class="value value--accent">${{ booking.remaining ?? 0 }}</strong>
     </div>
   </div>
@@ -83,7 +74,9 @@
   <div class="divider my-3"></div>
 
   <div class="detail-actions d-grid gap-2">
+    <!-- Fila superior -->
     <div class="d-flex gap-2">
+      <!-- Editar -->
       <button
         type="button"
         class="btn btn-outline-light detail-btn flex-fill"
@@ -91,12 +84,10 @@
         data-bs-target="#bookingEditModal"
         (click)="edit.emit(booking)"
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M4 20h4L20 8l-4-4L4 16v4z" />
-        </svg>
-        Cambiar datos
+        ✏️ Editar
       </button>
 
+      <!-- Exportar -->
       <div class="dropdown flex-fill">
         <button
           class="btn btn-outline-light detail-btn w-100 dropdown-toggle"
@@ -105,31 +96,24 @@
           aria-expanded="false"
           [disabled]="!booking"
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 3v12" />
-            <path d="M8 11l4 4 4-4" />
-            <path d="M4 19h16" />
-          </svg>
-          Mandar comprobante
+          📤 Exportar
         </button>
 
-        <ul class="dropdown-menu booking-export-menu w-100">
+        <ul class="dropdown-menu dropdown-menu-dark booking-export-menu w-100">
           <li>
             <button class="dropdown-item" type="button" (click)="copyText()">
-              Copiar el texto
+              📋 Copiar texto
             </button>
           </li>
 
           <li><hr class="dropdown-divider" /></li>
 
           <li>
-            <button class="dropdown-item" type="button" (click)="exportPdf()">Guardar en PDF</button>
+            <button class="dropdown-item" type="button" (click)="exportPdf()">📄 PDF</button>
           </li>
 
           <li>
-            <button class="dropdown-item" type="button" (click)="exportImage()">
-              Guardar como foto
-            </button>
+            <button class="dropdown-item" type="button" (click)="exportImage()">🖼️ Imagen</button>
           </li>
         </ul>
       </div>
@@ -141,15 +125,14 @@
       data-bs-toggle="modal"
       data-bs-target="#bookingCancelModal"
     >
-      Cancelar la reserva
+      ❌ Cancelar reserva
     </button>
   </div>
 
   <div class="hint text-muted-custom mt-3">
-    Para ver otra reserva, tocala en el calendario.
+    Tip: hacé click en otra reserva para cambiar el detalle.
   </div>
 </div>
-
 <div
   class="modal fade"
   id="bookingCancelModal"
@@ -162,7 +145,7 @@
       <div class="modal-header booking-modal__header">
         <h5 class="modal-title mb-0 d-flex align-items-center gap-2" id="bookingCancelLabel">
           <span class="dot dot--danger"></span>
-          Cancelar la reserva
+          Cancelar reserva
         </h5>
 
         <button
@@ -179,26 +162,37 @@
             <div class="cancel-icon">⚠️</div>
 
             <div class="flex-grow-1">
-              <div class="cancel-question">¿Querés cancelar esta reserva?</div>
-
-              <div class="cancel-booking">
-                <div class="cancel-booking__name">{{ booking.guestName }}</div>
-                <div class="cancel-booking__dates">
-                  Del {{ fmt(booking.checkIn) }} al {{ fmt(booking.checkOut) }}
-                </div>
+              <div class="fw-bold mb-1">¿Confirmás la cancelación?</div>
+              <div class="text-muted-custom">
+                Esta acción marcará la reserva como <strong>cancelada</strong>.
               </div>
 
-              <p class="cancel-note">
-                La reserva va a <strong>desaparecer del calendario</strong> y esos días quedan
-                libres para otra persona. Esto no se puede deshacer desde la app.
-              </p>
+              <!-- <div class="mt-3">
+                <label class="form-label fw-semibold">Motivo (opcional)</label>
+                <textarea
+                  class="form-control form-control-sm booking-input"
+                  rows="3"
+                  placeholder="Ej: el inquilino canceló / cambio de fecha / etc."
+                ></textarea>
+              </div>
+
+              <div class="cancel-kv mt-3">
+                <div class="kv">
+                  <div class="k">Estado</div>
+                  <div class="v">
+                    <span class="badge booking-badge booking-badge--danger"
+                      >Se marcará como cancelada</span
+                    >
+                  </div>
+                </div>
+              </div> -->
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer booking-modal__footer">
         <button type="button" class="btn btn-outline-light booking-btn" data-bs-dismiss="modal">
-          No, volver
+          Volver
         </button>
 
         <button
@@ -207,7 +201,7 @@
           data-bs-dismiss="modal"
           (click)="confirmCancel()"
         >
-          Sí, cancelar la reserva
+          Sí, cancelar reserva
         </button>
       </div>
     </div>

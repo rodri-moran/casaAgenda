@@ -3,7 +3,7 @@
     <div class="text-center mb-3">
       <div class="fs-2">🏡</div>
       <h4 class="fw-semibold mb-0">CasaAgenda</h4>
-      <div class="text-muted small">Acceso familiar</div>
+      <div class="text-muted small">Reservas de la familia</div>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -18,7 +18,7 @@
         @if (
           loginForm.get('username')?.touched && loginForm.get('username')?.hasError('required')
         ) {
-          <div class="text-danger small mt-1">El usuario es obligatorio</div>
+          <div class="text-danger small mt-1">Falta poner el usuario</div>
         }
       </div>
 
@@ -33,12 +33,12 @@
         @if (
           loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')
         ) {
-          <div class="text-danger small mt-1">La contraseña es obligatoria</div>
+          <div class="text-danger small mt-1">Falta poner la contraseña</div>
         }
       </div>
 
       <button type="submit" class="btn btn-success w-100" [disabled]="loading">
-        {{ loading ? 'Ingresando...' : 'Ingresar' }}
+        {{ loading ? 'Entrando...' : 'Entrar' }}
       </button>
     </form>
   </div>

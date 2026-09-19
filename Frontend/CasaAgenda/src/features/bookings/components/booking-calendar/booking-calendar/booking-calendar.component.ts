@@ -6,6 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { Booking } from '../../../models/booking.model';
 import esLocale from '@fullcalendar/core/locales/es';
 import { BookingResponseDto } from '../../../dtos/bookingResponseDto';
+import { Status } from '../../../enum/status';
 
 @Component({
   selector: 'app-booking-calendar',
@@ -58,6 +59,9 @@ export class BookingCalendarComponent implements OnInit {
       start: b.checkIn,
       end: b.checkOut,
       allDay: true,
+      // Solo da la clase CSS: el color vive en la hoja de estilos,
+      // igual que el de la leyenda debajo del calendario.
+      classNames: [b.status === Status.PENDING ? 'ca-event--pending' : 'ca-event--active'],
     }));
   }
 

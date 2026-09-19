@@ -16,6 +16,7 @@ import html2canvas from 'html2canvas';
 import { BookingCalculatorService } from '../../../../../shared/services/booking-calculator.service';
 import { BookingResponseDto } from '../../../dtos/bookingResponseDto';
 import { BookingService } from '../../../services/booking.service';
+import { Status } from '../../../enum/status';
 import { ToastService } from '../../../../../shared/ui/toast/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -33,6 +34,9 @@ export class BookingDetailPanelComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+  // Se expone el enum para poder comparar estados desde la plantilla.
+  readonly Status = Status;
+
   @Input({ required: true }) booking!: BookingResponseDto;
   @Input() apartment: Apartment | null = null;
 

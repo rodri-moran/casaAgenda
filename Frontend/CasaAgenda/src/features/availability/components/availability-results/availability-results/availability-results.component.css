@@ -1,0 +1,38 @@
+.result-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 16px;
+  padding: 14px 16px;
+  background: var(--accent-soft);
+  border: 2px solid var(--accent);
+  border-radius: 14px;
+  color: var(--accent-ink);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.result-banner svg {
+  flex-shrink: 0;
+}
+
+.result-empty {
+  margin-top: 20px;
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.result-empty__title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.result-empty__sub {
+  font-size: 17px;
+  color: var(--muted);
+  margin: 0;
+}

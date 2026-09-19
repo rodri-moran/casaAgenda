@@ -10,7 +10,7 @@
               Nuevo departamento
             </div>
             <div class="apartment-sub text-muted-custom">
-              Cargá los datos para agregar una nueva unidad.
+              Completá los datos del departamento que querés agregar.
             </div>
           </div>
 
@@ -37,13 +37,13 @@
                     type="text"
                     class="form-control form-control-sm apartment-input"
                     formControlName="name"
-                    placeholder="Ej: Depto Centro"
+                    placeholder="Por ejemplo: Depto Centro"
                   />
                   @if (
                     apartmentForm.get('name')?.touched &&
                     apartmentForm.get('name')?.hasError('required')
                   ) {
-                    <div class="text-danger small mt-1">El nombre es obligatorio</div>
+                    <div class="text-danger small mt-1">Falta poner el nombre</div>
                   }
 
                   <!-- Descripción -->
@@ -53,25 +53,25 @@
                       class="form-control form-control-sm apartment-input"
                       rows="3"
                       formControlName="description"
-                      placeholder="Ej: Monoambiente cerca de la peatonal, con cochera..."
+                      placeholder="Por ejemplo: cerca de la peatonal, con cochera"
                     ></textarea>
                     @if (
                       apartmentForm.get('description')?.touched &&
                       apartmentForm.get('description')?.hasError('required')
                     ) {
-                      <div class="text-danger small mt-1">La descripción es obligatoria</div>
+                      <div class="text-danger small mt-1">Falta poner la descripción</div>
                     }
                     @if (
                       apartmentForm.get('description')?.touched &&
                       apartmentForm.get('description')?.hasError('maxlength')
                     ) {
-                      <div class="text-danger small mt-1">Máx. 100 caracteres</div>
+                      <div class="text-danger small mt-1">Como mucho 100 letras</div>
                     }
                   </div>
 
                   <!-- Capacidad -->
                   <div class="mt-3">
-                    <label class="form-label fw-semibold">Capacidad</label>
+                    <label class="form-label fw-semibold">¿Cuánta gente entra?</label>
                     <div class="input-group apartment-ig">
                       <span class="input-group-text apartment-ig__icon">👥</span>
                       <input
@@ -85,7 +85,7 @@
                       apartmentForm.get('capacity')?.touched &&
                       apartmentForm.get('capacity')?.hasError('min')
                     ) {
-                      <div class="text-danger small mt-1">Capacidad mínima: 1</div>
+                      <div class="text-danger small mt-1">Tiene que entrar al menos 1 persona</div>
                     }
                   </div>
                 </div>
@@ -99,13 +99,13 @@
                     Imagen
                   </div>
 
-                  <label class="form-label fw-semibold">Link de la foto (opcional)</label>
+                  <label class="form-label fw-semibold">Link de la foto (no es obligatorio)</label>
 
                   <input
                     type="text"
                     class="form-control form-control-sm apartment-input"
                     formControlName="imageUrl"
-                    placeholder="Ej: link de Google Fotos/Drive"
+                    placeholder="Pegá acá el link de la foto"
                   />
 
                   <!-- Preview -->
@@ -135,7 +135,7 @@
                   *ngIf="apartmentForm.invalid && submitted"
                   class="alert apartment-alert mt-3 mb-0"
                 >
-                  Revisá los campos obligatorios.
+                  Faltan datos. Fijate los avisos en rojo.
                 </div>
               </div>
             </div>

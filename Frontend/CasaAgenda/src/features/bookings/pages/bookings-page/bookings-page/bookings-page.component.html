@@ -1,74 +1,80 @@
-<div class="d-flex align-items-center justify-content-between mb-3">
-  <div>
-    <h2 class="mb-0 fw-bold">Reservas</h2>
-    <div class="text-muted-custom d-none d-md-block">
-      Seleccioná un departamento para ver su calendario.
-    </div>
-  </div>
+<div class="bookings-head">
+  <h1 class="page-title">Reservas</h1>
 
-  <button
-    class="btn btn-outline-light booking-btn"
-    data-bs-toggle="modal"
-    data-bs-target="#bookingFormModal"
-  >
-    + Nueva reserva
+  <button class="btn btn-success bookings-new" data-bs-toggle="modal" data-bs-target="#bookingFormModal">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+    Anotar una reserva
   </button>
 </div>
 
 <div class="row g-3">
-  <div class="col-12 col-md-2">
-    <div class="card p-2">
-      <div class="fw-semibold px-2 py-2">Departamentos</div>
+  <div class="col-12 col-md-4 col-xl-3">
+    <h2 class="step-title">1. Elegí el departamento</h2>
 
-      <div class="list-group list-group-flush">
-        @for (apt of (apartments$ | async) ?? []; track apt.id) {
-          <button
-            type="button"
-            class="list-group-item list-group-item-action btn-select text-white"
-            (click)="selectedApartmentId = apt.id"
-            [class.active]="selectedApartmentId === apt.id"
-          >
-            {{ apt.name }}
-          </button>
-        }
-      </div>
+    <div class="list-group list-group-flush deptos-list">
+      @for (apt of (apartments$ | async) ?? []; track apt.id) {
+        <button
+          type="button"
+          class="list-group-item list-group-item-action btn-select"
+          (click)="selectedApartmentId = apt.id"
+          [class.active]="selectedApartmentId === apt.id"
+        >
+          {{ apt.name }}
+        </button>
+      }
     </div>
   </div>
 
-  <div class="col-12 col-xl-6">
+  <div class="col-12 col-md-8 col-xl-9">
+    <h2 class="step-title">2. Tocá una reserva del calendario</h2>
+
     <div class="card p-3">
       <ng-container *ngIf="selectedApartmentId; else emptyState">
         <app-booking-calendar
           [bookings]="filteredBookings"
           (selectedBooking)="selectedBookingId.set($event)"
         ></app-booking-calendar>
+
+        <div class="calendar-legend">
+          <span class="legend-item">
+            <span class="legend-swatch legend-swatch--active"></span>
+            Están acá ahora
+          </span>
+          <span class="legend-item">
+            <span class="legend-swatch legend-swatch--pending"></span>
+            Vienen pronto
+          </span>
+          <span class="legend-note">
+            Las reservas que ya terminaron o que cancelaste no aparecen acá.
+          </span>
+        </div>
       </ng-container>
 
       <ng-template #emptyState>
-        <div class="py-5 text-center text-muted-custom">
-          Elegí un departamento para ver sus reservas.
-        </div>
+        <div class="calendar-empty">Elegí un departamento de la lista para ver sus reservas.</div>
       </ng-template>
     </div>
   </div>
-  <div class="col-12 col-xl-4">
-    <!-- Panel detalle -->
+
+  <div class="col-12">
     @if (selectedBooking(); as b) {
       <app-booking-detail-panel
         [booking]="b"
-        0
         [apartment]="selectedApartment()"
         (edit)="openEditModal($event)"
         (close)="selectedBookingId.set(null)"
         (cancelled)="onBookingCancelled($event)"
       />
     } @else {
-      <div class="card p-3 text-muted-custom">
-        Tocá una reserva del calendario para ver el detalle.
+      <div class="card detail-placeholder">
+        Tocá una reserva del calendario y acá abajo vas a ver todos sus datos.
       </div>
     }
   </div>
 </div>
+
 @if (apartments$ | async; as apartments) {
   <app-booking-form-modal
     (created)="onBookingCreated($event)"

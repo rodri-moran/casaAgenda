@@ -6,16 +6,18 @@ import { ApartmentFormComponent } from '../features/apartments/pages/apartment-f
 import { AvailabilityPageComponent } from '../features/availability/pages/availability-page/availability-page/availability-page.component';
 import { CalculatorPageComponent } from '../features/calculator/pages/calculator-page/calculator-page/calculator-page.component';
 import { LoginComponent } from '../features/auth/pages/login/login.component';
+import { HomeComponent } from '../features/home/pages/home/home.component';
 import { authGuard } from '../core/auth/auth.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: 'departamentos', pathMatch: 'full' },
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   {
     path: '',
     component: LayoutComponentComponent,
     canActivate: [authGuard],
     children: [
+      { path: 'inicio', component: HomeComponent },
       { path: 'departamentos', component: ApartmentListComponent },
       { path: 'reservas', component: BookingsPageComponent },
       { path: 'crearDepartamento', component: ApartmentFormComponent },

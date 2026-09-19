@@ -1,5 +1,5 @@
-<h2 class="mb-0 fw-bold">Calculadora</h2>
-<div class="text-muted-custom">Calcula rápidamente los valores de una posible reserva</div>
+<h2 class="mb-0 fw-bold">Sacar cuentas</h2>
+<div class="text-muted-custom">Sirve para sacar cuentas. No guarda ninguna reserva.</div>
 
 <div class="card p-3 mt-4 calc-card">
   <div class="d-flex align-items-stretch gap-3 calc-layout">
@@ -8,7 +8,7 @@
       <div class="calc-panel__header">
         <div class="calc-title">
           <span class="dot dot--accent"></span>
-          <span>Opciones</span>
+          <span>Los datos</span>
         </div>
       </div>
 
@@ -46,7 +46,7 @@
         </div>
 
         <div class="calc-field">
-          <label class="form-label fw-semibold">Precio por persona</label>
+          <label class="form-label fw-semibold">Precio por persona, por noche</label>
           <div class="input-group booking-ig calc-ig">
             <span class="input-group-text calc-icon">$</span>
             <input
@@ -65,7 +65,7 @@
         </div>
 
         <div class="calc-field">
-          <label class="form-label fw-semibold">Depósito / Descuento</label>
+          <label class="form-label fw-semibold">Seña o descuento</label>
           <div class="input-group booking-ig calc-ig">
             <span class="input-group-text calc-icon">$</span>
             <input
@@ -92,7 +92,7 @@
       <div class="calc-panel__header">
         <div class="calc-title">
           <span class="dot dot--accent2"></span>
-          <span>Resultados</span>
+          <span>La cuenta</span>
         </div>
         <span class="calc-chip calc-chip--accent">Estimación</span>
       </div>
@@ -123,14 +123,14 @@
         </div>
 
         <div class="summary-row">
-          <span class="label">Depósito / Descuento</span>
+          <span class="label">Seña o descuento</span>
           <strong class="value">${{ discount() }}</strong>
         </div>
 
         <div class="divider calc-divider-h"></div>
 
         <div class="summary-row calc-total-row">
-          <span class="label">Restante</span>
+          <span class="label">Queda a pagar</span>
           <strong class="value value--accent">${{ remaining() }}</strong>
         </div>
       </div>

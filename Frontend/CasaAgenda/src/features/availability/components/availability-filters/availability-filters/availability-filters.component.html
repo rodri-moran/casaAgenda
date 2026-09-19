@@ -1,33 +1,35 @@
-<form [formGroup]="form">
-  <div class="row g-2 mt-2">
-    <div class="col-12 col-md-6">
-      <label class="">Entrada</label>
-      <input
-        type="date"
-        class="form-control form-control-sm availability-input"
-        formControlName="checkIn"
-        inputmode="none"
-        (click)="openDatePicker($event)"
-        (focus)="openDatePicker($event)"
-        (keydown)="blockTyping($event)"
-        (paste)="$event.preventDefault()"
-      />
-    </div>
-    <div class="col-12 col-md-6">
-      <label class="">Salida</label>
-      <input
-        type="date"
-        class="form-control form-control-sm availability-input"
-        formControlName="checkOut"
-        inputmode="none"
-        (click)="openDatePicker($event)"
-        (focus)="openDatePicker($event)"
-        (keydown)="blockTyping($event)"
-        (paste)="$event.preventDefault()"
-      />
-    </div>
+<form [formGroup]="form" class="availability-form">
+  <div class="availability-field">
+    <label for="availability-desde">¿Desde qué día?</label>
+    <input
+      id="availability-desde"
+      type="date"
+      class="form-control availability-input"
+      formControlName="checkIn"
+      inputmode="none"
+      (click)="openDatePicker($event)"
+      (focus)="openDatePicker($event)"
+      (keydown)="blockTyping($event)"
+      (paste)="$event.preventDefault()"
+    />
+  </div>
+
+  <div class="availability-field">
+    <label for="availability-hasta">¿Hasta qué día?</label>
+    <input
+      id="availability-hasta"
+      type="date"
+      class="form-control availability-input"
+      formControlName="checkOut"
+      inputmode="none"
+      (click)="openDatePicker($event)"
+      (focus)="openDatePicker($event)"
+      (keydown)="blockTyping($event)"
+      (paste)="$event.preventDefault()"
+    />
   </div>
 </form>
+
 <app-availability-results
   [checkIn]="checkInValue"
   [checkOut]="checkOutValue"

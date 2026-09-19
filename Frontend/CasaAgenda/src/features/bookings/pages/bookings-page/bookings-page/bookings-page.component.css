@@ -1,73 +1,162 @@
+.bookings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.bookings-new {
+  flex-shrink: 0;
+}
+
+.step-title {
+  font-family: var(--font-ui);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.deptos-list {
+  gap: 0;
+}
+
+.calendar-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px solid var(--border-soft);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+}
+
+.legend-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.legend-swatch--active {
+  background: var(--accent);
+}
+
+.legend-swatch--pending {
+  background: var(--warn);
+}
+
+.legend-note {
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.calendar-empty {
+  padding: 48px 16px;
+  text-align: center;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+.detail-placeholder {
+  padding: 28px 16px;
+  text-align: center;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+@media (max-width: 575.98px) {
+  .bookings-new {
+    width: 100%;
+  }
+}
+
+/* Estos estilos son locales al componente y pisan a los globales,
+   así que replican el tema claro en vez de contradecirlo. */
+
 #bookingFormModal .modal-content {
   border-radius: 18px;
   overflow: hidden;
 }
 
-.booking-form .section-card {
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.06);
+.booking-form .section-card,
+.booking-form .section-card-notes {
+  border: 2px solid var(--border);
+  background: var(--surface);
   border-radius: 16px;
-  padding: 14px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+  padding: 16px;
+  box-shadow: none;
 }
 
 .booking-form .section-card-notes {
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 5px;
-  margin-top: 0px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+  padding: 10px;
+  margin-top: 0;
 }
 
 .section-title {
-  font-weight: 800;
-  margin-bottom: 10px;
-  letter-spacing: 0.2px;
+  font-weight: 700;
+  font-size: 19px;
+  margin-bottom: 12px;
+  letter-spacing: 0;
 }
 
 .booking-form .form-label {
   margin-bottom: 6px;
 }
 
-
 .divider {
   height: 1px;
-  background: rgba(0, 0, 0, 0.12);
+  background: var(--border-soft);
   margin: 10px 0;
 }
 
-.booking-modal { border-radius: 18px; }
-
-.booking-form .section-card{
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.14);
+.booking-modal {
+  border-radius: 18px;
 }
-
-.section-title{
-  font-weight: 800;
-  margin-bottom: 8px;
-}
-
-.booking-form .form-label{ margin-bottom: 6px; }
 
 .summary-view .kv {
-  padding: 10px 12px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  background: var(--surface);
   border-radius: 12px;
   margin-bottom: 10px;
 }
 
 .summary-view .k {
-  font-size: 12px;
-  opacity: 0.75;
+  font-size: 15px;
+  color: var(--muted);
+  opacity: 1;
 }
 
 .summary-view .v {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+/* La columna de departamentos: en tablet quedaba tan angosta
+   que "Depto Centro" se cortaba. */
+.row > .col-md-2 {
+  min-width: 0;
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .row > .col-md-2 {
+    flex: 0 0 auto;
+    width: 33.333%;
+  }
 }

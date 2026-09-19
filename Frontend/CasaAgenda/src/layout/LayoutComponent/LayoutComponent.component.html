@@ -1,74 +1,29 @@
-<header class="navbar app-header px-3">
-  <div class="d-flex align-items-center gap-3 w-100">
-    <button
-      class="btn app-icon-btn d-xl-none"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#sidebar"
-      aria-label="Toggle sidebar"
-    >
-      ☰
-    </button>
-
-    <a [routerLink]="['/']" class="brand text-decoration-none">
-      <span class="brand-mark">🏡</span>
-      <span class="brand-title">CasaAgenda</span>
-      <span class="brand-sub d-none d-sm-inline">Reservas familiares</span>
+<header class="app-header px-3">
+  <div class="app-header__inner">
+    <a [routerLink]="['/inicio']" class="app-home-btn" aria-label="Ir al inicio">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5" />
+        <path d="M5 9.5V21h14V9.5" />
+      </svg>
+      <span>Inicio</span>
     </a>
 
-    <div class="ms-auto d-flex align-items-center gap-2">
-      <button class="btn app-icon-btn" type="button" aria-label="Notifications">🔔</button>
-      <button class="btn app-pill-btn" type="button">Nuevo</button>
-      <button class="btn app-icon-btn" type="button" aria-label="Salir" title="Salir" (click)="logout()">🚪</button>
-    </div>
+    <a [routerLink]="['/inicio']" class="brand text-decoration-none">
+      <span class="brand-title">CasaAgenda</span>
+    </a>
+
+    <button class="app-logout-btn" type="button" (click)="logout()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4" />
+        <path d="M4 12h11" />
+        <path d="M11 8l4 4-4 4" />
+      </svg>
+      <span>Salir</span>
+    </button>
   </div>
 </header>
 
 <div class="app-shell">
-  <aside id="sidebar" class="app-sidebar collapse d-xl-block">
-    <div class="p-3">
-      <div class="sidebar-title mb-2">Menú</div>
-
-      <ul class="nav nav-pills flex-column gap-1">
-        <li class="nav-item">
-          <a
-            class="nav-link app-link"
-            [routerLink]="['/departamentos']"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <span class="me-2">📁</span> Departamentos
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link app-link" [routerLink]="['/reservas']" routerLinkActive="active">
-            <span class="me-2">📝</span> Reservas
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a
-            class="nav-link app-link"
-            [routerLink]="['/disponibilidad']"
-            routerLinkActive="active"
-            href="#"
-          >
-            <span class="me-2">🟢</span> Disponibilidad
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link app-link" routerLinkActive="active" [routerLink]="['/calculadora']">
-            <span class="me-2">🧮</span> Calculadora
-          </a>
-        </li>
-      </ul>
-
-      <div class="sidebar-divider my-3"></div>
-    </div>
-  </aside>
-
   <main class="app-main">
     <router-outlet></router-outlet>
   </main>

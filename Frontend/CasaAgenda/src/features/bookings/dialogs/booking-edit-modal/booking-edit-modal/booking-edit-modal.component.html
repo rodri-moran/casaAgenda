@@ -9,7 +9,7 @@
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content booking-modal">
       <div class="modal-header booking-modal__header">
-        <h5 class="modal-title mb-0">Editar reserva</h5>
+        <h5 class="modal-title mb-0">Cambiar los datos</h5>
         <button
           type="button"
           class="btn-close booking-modal__close"
@@ -30,7 +30,7 @@
 
                 <!-- Precio por persona -->
                 <div class="mt-2">
-                  <label class="form-label fw-semibold">Precio por persona</label>
+                  <label class="form-label fw-semibold">Precio por persona, por noche</label>
                   <div class="input-group booking-ig">
                     <span class="input-group-text booking-ig__icon">$</span>
                     <input
@@ -68,7 +68,7 @@
 
                   <div class="row g-2 mt-2">
                     <div class="col-12 col-md-6">
-                      <label class="form-label small text-muted mb-1">Check-in</label>
+                      <label class="form-label small text-muted mb-1">¿Qué día entra?</label>
                       <input
                         type="date"
                         class="form-control form-control-sm booking-input"
@@ -76,7 +76,7 @@
                       />
                     </div>
                     <div class="col-12 col-md-6">
-                      <label class="form-label small text-muted mb-1">Check-out</label>
+                      <label class="form-label small text-muted mb-1">¿Qué día se va?</label>
                       <input
                         type="date"
                         class="form-control form-control-sm booking-input"
@@ -88,7 +88,7 @@
 
                 <!-- Huésped -->
                 <div class="mt-2">
-                  <label class="form-label fw-semibold">Nombre y apellido</label>
+                  <label class="form-label fw-semibold">¿Quién viene?</label>
                   <input
                     type="text"
                     class="form-control form-control-sm booking-input"
@@ -119,7 +119,7 @@
                 </div>
 
                 <!-- Personas -->
-                <label class="form-label fw-semibold">Cantidad de personas</label>
+                <label class="form-label fw-semibold">¿Cuántas personas?</label>
                 <div class="input-group booking-ig">
                   <span class="input-group-text booking-ig__icon">👥</span>
                   <input
@@ -153,7 +153,7 @@
 
                 <!-- Depósito -->
                 <div class="mt-3">
-                  <label class="form-label fw-semibold">Seña / Depósito</label>
+                  <label class="form-label fw-semibold">¿Cuánto dejó de seña?</label>
                   <div class="input-group booking-ig">
                     <span class="input-group-text booking-ig__icon">$</span>
                     <input
@@ -200,12 +200,12 @@
                   <strong class="value">${{ total() }}</strong>
                 </div>
                 <div class="summary-row">
-                  <span class="label">Depósito</span>
+                  <span class="label">Seña</span>
                   <strong class="value">${{ deposit() }}</strong>
                 </div>
                 <div class="divider"></div>
                 <div class="summary-row">
-                  <span class="label">Restante</span>
+                  <span class="label">Falta pagar</span>
                   <strong class="value value--accent">${{ remaining() }}</strong>
                 </div>
               </div>

@@ -1,35 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+
+/* ==========================================================================
+   CasaAgenda — tema claro, alto contraste.
+   Pensado para leerse de lejos y tocarse con el dedo.
+   Nada acá cambia comportamiento: son colores, tamaños y espaciados.
+   ========================================================================== */
+
 :root {
-  --bg: #0b1220;
-  --panel: rgba(255, 255, 255, 0.06);
-  --panel-strong: rgba(255, 255, 255, 0.1);
-  --border: rgba(255, 255, 255, 0.12);
+  --bg: #f4f1ea;
+  --surface: #ffffff;
+  --surface-2: #ede8dc;
+  --panel: #ffffff;
+  --panel-strong: #ede8dc;
 
-  --text: rgba(255, 255, 255, 0.92);
-  --muted: rgba(255, 255, 255, 0.65);
+  --border: #dad4c8;
+  --border-soft: #e7e2d6;
+  --border-strong: #1b1a17;
 
-  --accent: #14b8a6;
-  --accent-2: #a78bfa;
-  --danger: #fb7185;
+  --text: #1b1a17;
+  --text-soft: #45423b;
+  --muted: #5c584f;
 
-  --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-  --radius: 18px;
+  --accent: #1a6b48;
+  --accent-dark: #125137;
+  --accent-ink: #123f2b;
+  --accent-soft: #e3efe8;
+
+  --accent-2: #1b4f8a;
+  --accent-2-dark: #163f6e;
+  --accent-2-soft: #e9eff6;
+
+  --danger: #96221f;
+  --danger-dark: #7f1c19;
+  --danger-soft: #fdf1f0;
+
+  --warn: #9a5b06;
+  --warn-ink: #5c3a04;
+  --warn-soft: #fdf3e0;
+
+  --shadow: 0 2px 10px rgba(27, 26, 23, 0.08);
+  --radius: 16px;
+
+  --tap: 56px;
+
+  --font-ui: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
 }
 
-/* Fondo general */
+/* ============================ Base ============================ */
+
+html,
 body {
-  background:
-    radial-gradient(1200px 600px at 10% 0%, rgba(20, 184, 166, 0.18), transparent 55%),
-    radial-gradient(900px 500px at 90% 10%, rgba(167, 139, 250, 0.16), transparent 50%), var(--bg);
-  color: var(--text);
-  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-/* Header */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+}
+
+/* Nada de texto microscópico: Bootstrap usa .small y <small> por todos lados. */
+small,
+.small {
+  font-size: 0.94rem !important;
+}
+
+/* Que ninguna palabra larga rompa el layout ni se corte. */
+p,
+span,
+label,
+a,
+li,
+td,
+th,
+div {
+  overflow-wrap: break-word;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+/* ============================ Header ============================ */
+
 .app-header {
-  height: 64px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(12px);
+  min-height: 68px;
+  height: auto;
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  backdrop-filter: none;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.app-header > .d-flex {
+  flex-wrap: wrap;
+  row-gap: 8px;
 }
 
 .brand {
@@ -37,214 +125,482 @@ body {
   align-items: baseline;
   gap: 10px;
   color: var(--text);
+  min-width: 0;
 }
 
 .brand-mark {
-  font-size: 18px;
+  font-size: 20px;
 }
+
 .brand-title {
-  font-weight: 800;
-  font-size: 18px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
   letter-spacing: 0.2px;
 }
+
 .brand-sub {
-  margin-left: 10px;
+  margin-left: 8px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .app-icon-btn {
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.06);
+  min-width: 52px;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border-strong);
+  background: var(--surface);
   color: var(--text);
   border-radius: 12px;
   padding: 8px 12px;
-  transition:
-    transform 0.12s ease,
-    background 0.12s ease;
-}
-
-.list-group-item.btn-select {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text);
-  border-color: var(--border);
-}
-
-.list-group-item.btn-select:hover {
-  background: rgba(255, 255, 255, 0.12) !important;
-  color: var(--text) !important;
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateX(2px);
-}
-
-.list-group-item.btn-select.active {
-  background: linear-gradient(90deg, rgba(20, 184, 166, 0.35), rgba(167, 139, 250, 0.2)) !important;
-
-  border-color: rgba(20, 184, 166, 0.35);
-  color: var(--text) !important;
+  font-size: 19px;
+  transition: background 0.12s ease;
 }
 
 .app-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-1px);
+  background: var(--surface-2);
+  color: var(--text);
+  transform: none;
 }
 
 .app-pill-btn {
-  border: 1px solid rgba(20, 184, 166, 0.55);
-  background: rgba(20, 184, 166, 0.18);
-  color: var(--text);
-  border-radius: 999px;
-  padding: 8px 14px;
-}
-.app-pill-btn:hover {
-  background: rgba(20, 184, 166, 0.25);
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--accent-dark);
+  background: var(--accent);
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 8px 18px;
+  font-size: 17px;
+  font-weight: 700;
 }
 
-/* Shell */
+.app-pill-btn:hover {
+  background: var(--accent-dark);
+  color: #ffffff;
+}
+
+/* ============================ Shell ============================ */
+
 .app-shell {
   display: flex;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 68px);
+  align-items: flex-start;
 }
 
-/* Sidebar */
 .app-sidebar {
-  width: 220px;
-  border-right: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-  backdrop-filter: blur(12px);
+  width: 250px;
+  flex-shrink: 0;
+  border-right: 2px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: none;
 }
 
 .sidebar-title {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
 }
 
 .sidebar-divider {
-  height: 1px;
+  height: 2px;
   background: var(--border);
   border-radius: 999px;
 }
 
 .divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-soft);
   margin: 10px 0;
 }
 
 .vertical-divider {
-  width: 1px;
-  background: var(--border);
+  width: 2px;
+  background: var(--border-soft);
   align-self: stretch;
-  opacity: 0.8;
+  opacity: 1;
 }
 
 .sidebar-hint {
   color: var(--muted);
-  font-size: 13px;
-  line-height: 1.3;
+  font-size: 15px;
+  line-height: 1.4;
 }
 
-/* Links */
+/* Links del menú */
 .app-sidebar .app-link {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap);
   color: var(--text);
-  border-radius: 14px;
-  padding: 10px 12px;
-  border: 1px solid transparent;
-  transition:
-    background 0.12s ease,
-    border-color 0.12s ease,
-    transform 0.12s ease;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: 2px solid transparent;
+  white-space: normal;
+  transition: background 0.12s ease;
 }
 
 .app-sidebar .app-link:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.1);
-  transform: translateX(2px);
-}
-
-.app-sidebar .nav-link.active {
-  background: linear-gradient(90deg, rgba(20, 184, 166, 0.35), rgba(167, 139, 250, 0.2));
-  border-color: rgba(20, 184, 166, 0.35);
+  background: var(--surface-2);
+  border-color: var(--border);
+  transform: none;
   color: var(--text);
 }
 
-/* Main */
+.app-sidebar .nav-link.active {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #ffffff;
+}
+
+/* ============================ Main ============================ */
+
 .app-main {
   flex: 1;
+  min-width: 0;
   padding: 18px;
 }
 
 .card {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid var(--border);
+  background: var(--surface);
   color: var(--text);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
 
 .text-muted-custom {
-  color: rgba(252, 252, 252, 0.5);
+  color: var(--muted);
 }
 
 .text-muted-dark {
-  color: rgba(23, 34, 58, 0.438);
+  color: var(--muted);
+}
+
+/* En tema claro, el texto blanco de las plantillas es invisible.
+   Se fuerza a tinta oscura, salvo donde hay un fondo lleno de color. */
+.app-main .text-white,
+.app-main .text-center.text-white {
+  color: var(--text) !important;
 }
 
 .dot {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
   display: inline-block;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+  flex-shrink: 0;
 }
+
 .dot--accent {
   background: var(--accent);
 }
+
 .dot--accent2 {
   background: var(--accent-2);
 }
 
+.dot--danger {
+  background: var(--danger);
+}
+
+/* ============================ Bootstrap: botones ============================ */
+
+.btn {
+  min-height: var(--tap);
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-width: 2px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: normal;
+  text-align: center;
+}
+
+.btn:disabled,
+.btn.disabled {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--muted);
+  opacity: 1;
+}
+
+.btn-primary,
+.btn-success {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #ffffff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-success:hover,
+.btn-success:focus {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: #ffffff;
+}
+
+/* .btn-outline-light sobre fondo claro es invisible: se vuelve contorno oscuro. */
+.btn-outline-light {
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.btn-danger {
+  background: var(--danger);
+  border-color: var(--danger-dark);
+  color: #ffffff;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background: var(--danger-dark);
+  border-color: var(--danger-dark);
+  color: #ffffff;
+}
+
+.btn-outline-danger {
+  background: var(--surface);
+  border-color: var(--danger);
+  color: var(--danger-dark);
+}
+
+.btn-outline-danger:hover,
+.btn-outline-danger:focus {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  color: var(--danger-dark);
+}
+
+.btn-close {
+  min-height: 44px;
+  min-width: 44px;
+  opacity: 0.9;
+}
+
+/* ============================ Bootstrap: formularios ============================ */
+
+.form-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  white-space: normal;
+}
+
+.form-control,
+.form-select {
+  min-height: var(--tap);
+  min-width: 0;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 18px;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  border-radius: 12px;
+}
+
+/* Bootstrap achica los -sm; acá no, porque son los que más se tocan. */
+.form-control-sm,
+.form-select-sm {
+  min-height: var(--tap);
+  padding: 10px 14px;
+  font-size: 18px;
+  border-radius: 12px;
+}
+
+textarea.form-control,
+textarea.form-control-sm {
+  min-height: 110px;
+  line-height: 1.45;
+}
+
+.form-control::placeholder {
+  color: #7d786d;
+  opacity: 1;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 0.25rem rgba(27, 79, 138, 0.18);
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background: var(--surface-2);
+  color: var(--text-soft);
+  border-color: var(--border);
+}
+
+.input-group {
+  flex-wrap: nowrap;
+}
+
+.input-group-text {
+  min-height: var(--tap);
+  min-width: 52px;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-soft);
+  background: var(--surface-2);
+  border: 2px solid var(--border-strong);
+  border-right: 0;
+  border-radius: 12px 0 0 12px;
+}
+
+.input-group > .form-control,
+.input-group > .form-select {
+  border-radius: 0 12px 12px 0;
+}
+
+/* Mensajes de error: legibles, no un susurro rojo de 11px. */
+.text-danger {
+  color: var(--danger-dark) !important;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.is-invalid,
+.ng-touched.ng-invalid.form-control {
+  border-color: var(--danger) !important;
+  border-width: 3px !important;
+  background: var(--danger-soft);
+}
+
+/* ============================ Listas de selección ============================ */
+
+.list-group-item.btn-select {
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  padding: 10px 14px;
+  white-space: normal;
+  text-align: left;
+}
+
+.list-group-item.btn-select:hover {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--border-strong);
+  transform: none;
+}
+
+.list-group-item.btn-select.active {
+  background: var(--accent) !important;
+  border-color: var(--accent-dark) !important;
+  color: #ffffff !important;
+}
+
+/* ============================ Bloques compartidos ============================ */
+
 .summary-view .kv {
-  padding: 10px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.06);
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  background: var(--surface);
   border-radius: 12px;
   margin-bottom: 10px;
 }
 
 .summary-view .k {
-  font-size: 12px;
-  opacity: 0.75;
+  font-size: 15px;
+  color: var(--muted);
+  opacity: 1;
 }
 
 .summary-view .v {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 19px;
+  font-weight: 700;
 }
 
 .summary-card {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--border);
+  background: var(--surface);
   border-radius: 14px;
-  padding: 12px;
+  padding: 14px;
 }
+
 .summary-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 4px 2px;
+  align-items: baseline;
+  gap: 12px;
+  padding: 7px 2px;
 }
+
 .summary-row .label {
-  color: var(--muted);
+  color: var(--text-soft);
+  font-size: 17px;
 }
+
 .summary-row .value {
   color: var(--text);
+  font-size: 19px;
+  font-weight: 700;
+  white-space: nowrap;
 }
+
 .summary-row .value--accent {
-  color: rgba(20, 184, 166, 0.95);
+  color: var(--accent-ink);
+  font-size: 24px;
 }
+
+.section-card {
+  border: 2px solid var(--border);
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: none;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 19px;
+  margin-bottom: 12px;
+  letter-spacing: 0;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ============================ Calculadora ============================ */
 
 .calc-card {
   padding: 18px !important;
@@ -258,30 +614,35 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 
 .calc-title {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 800;
-  letter-spacing: 0.2px;
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: 0;
 }
 
 .calc-chip {
-  font-size: 12px;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--muted);
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  white-space: nowrap;
 }
 
 .calc-chip--accent {
-  border-color: rgba(20, 184, 166, 0.35);
-  background: rgba(20, 184, 166, 0.12);
-  color: rgba(255, 255, 255, 0.85);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
 }
 
 .calc-form {
@@ -289,158 +650,126 @@ body {
 }
 
 .calc-field {
-  margin-top: 12px;
+  margin-top: 16px;
 }
+
 .calc-field:first-child {
   margin-top: 0;
 }
 
 .booking-ig__icon {
-  min-width: 44px;
+  min-width: 52px;
   justify-content: center;
 }
 
 .calc-icon {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: var(--text);
+  background: var(--surface-2);
+  border: 2px solid var(--border-strong);
+  border-right: 0;
+  color: var(--text-soft);
   border-radius: 12px 0 0 12px;
 }
 
 .calc-divider {
-  width: 1px;
+  width: 2px;
   align-self: stretch;
-  opacity: 0.8;
-  background: linear-gradient(to bottom, transparent, var(--border), transparent);
+  opacity: 1;
+  background: var(--border-soft);
 }
 
 .calc-divider-h {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-soft);
 }
 
 .calc-summary {
-  padding: 14px;
+  padding: 16px;
 }
 
 .calc-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .calc-kpi {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid var(--border);
+  background: var(--surface);
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 12px 14px;
+  min-width: 0;
 }
 
 .calc-kpi .k {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--muted);
   margin-bottom: 2px;
 }
 
 .calc-kpi .v {
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 0.2px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .calc-total-row {
-  padding-top: 8px;
+  padding-top: 10px;
 }
 
 .calc-input {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: var(--surface) !important;
+  border: 2px solid var(--border-strong) !important;
   color: var(--text) !important;
 }
+
 .calc-input::placeholder {
-  color: rgba(255, 255, 255, 0.45) !important;
+  color: #7d786d !important;
 }
+
+/* ============================ Modales de reserva ============================ */
 
 :is(#bookingFormModal, #bookingEditModal) .modal-content {
   border-radius: 18px;
   overflow: hidden;
 }
 
-.booking-form .section-card {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
-}
-
-.booking-form .section-card-notes {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 5px;
-  margin-top: 0px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
-}
-
-.section-title {
-  font-weight: 800;
-  margin-bottom: 10px;
-  letter-spacing: 0.2px;
-}
-
-.booking-form .form-label {
-  margin-bottom: 6px;
-}
-
 .booking-modal {
   border-radius: 18px;
 }
 
-.booking-form .section-card {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
-}
-
-.section-title {
-  font-weight: 800;
-  margin-bottom: 8px;
-}
-
-.booking-form .form-label {
-  margin-bottom: 6px;
-}
-
-.modal-booking .modal-dialog {
-  padding: 10px;
-}
-
-:is(#bookingFormModal, #bookingEditModal) .modal-content.booking-modal {
+:is(#bookingFormModal, #bookingEditModal) .modal-content.booking-modal,
+.booking-modal {
   border-radius: var(--radius);
   overflow: hidden;
-  border: 1px solid var(--border);
-  background:
-    radial-gradient(900px 500px at 0% 0%, rgba(20, 184, 166, 0.1), transparent 55%),
-    radial-gradient(700px 450px at 100% 0%, rgba(167, 139, 250, 0.1), transparent 50%),
-    rgba(11, 18, 32, 0.92);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(14px);
+  border: 2px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 10px 40px rgba(27, 26, 23, 0.25);
+  backdrop-filter: none;
 }
 
 .booking-modal__header {
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  border-bottom: 2px solid var(--border);
+  background: var(--surface);
+  padding: 14px 16px;
+  gap: 10px;
 }
+
+.booking-modal__header .modal-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+}
+
 .booking-modal__sub {
   margin-top: 2px;
+  color: var(--muted);
 }
 
 .booking-modal__close {
-  filter: invert(1);
-  opacity: 0.9;
+  filter: none;
+  opacity: 0.85;
 }
+
 .booking-modal__close:hover {
   opacity: 1;
 }
@@ -449,99 +778,153 @@ body {
   padding: 16px;
 }
 
-.section-card {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+.booking-modal__footer {
+  border-top: 2px solid var(--border);
+  background: var(--surface);
+  gap: 10px;
+  padding: 14px 16px;
+  flex-wrap: wrap;
 }
 
-.section-title {
-  font-weight: 800;
-  margin-bottom: 10px;
-  letter-spacing: 0.2px;
-  color: var(--text);
+/* Los botones del pie no se pisan ni se cortan: cada uno entero o a lo ancho. */
+.booking-modal__footer .booking-btn {
+  flex: 1 1 auto;
+  min-width: 140px;
+}
+
+.booking-btn {
+  border-radius: 12px;
+  padding: 10px 16px;
+  min-height: var(--tap);
+}
+
+.booking-btn--primary {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #ffffff;
+}
+
+.booking-btn--primary:hover {
+  background: var(--accent-dark);
+  color: #ffffff;
+}
+
+.booking-btn--success {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #ffffff;
+}
+
+.booking-btn--success:hover {
+  background: var(--accent-dark);
+  color: #ffffff;
+}
+
+.booking-btn--danger {
+  background: var(--danger);
+  border-color: var(--danger-dark);
+  color: #ffffff;
+}
+
+.booking-btn--danger:hover {
+  background: var(--danger-dark);
+  color: #ffffff;
+}
+
+.booking-form .section-card,
+.booking-form .section-card-notes {
+  border: 2px solid var(--border);
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: none;
+}
+
+.booking-form .form-label {
+  margin-bottom: 6px;
 }
 
 .booking-input,
 .booking-form .form-select {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: var(--surface) !important;
+  border: 2px solid var(--border-strong) !important;
   color: var(--text) !important;
   border-radius: 12px;
 }
+
 .booking-input::placeholder {
-  color: rgba(255, 255, 255, 0.45);
+  color: #7d786d;
 }
+
 .booking-input:focus,
 .booking-form .form-select:focus {
-  box-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.18);
-  border-color: rgba(20, 184, 166, 0.55) !important;
+  box-shadow: 0 0 0 0.25rem rgba(27, 79, 138, 0.18);
+  border-color: var(--accent-2) !important;
+}
+
+.booking-ig {
+  flex-wrap: nowrap;
 }
 
 .booking-ig .booking-ig__icon {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: var(--text);
+  background: var(--surface-2);
+  border: 2px solid var(--border-strong);
+  border-right: 0;
+  color: var(--text-soft);
   border-radius: 12px 0 0 12px;
 }
+
 .booking-ig .form-control {
   border-left: 0 !important;
 }
 
 .booking-badge {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.8);
-  padding: 6px 10px;
+  background: var(--surface-2);
+  border: 2px solid var(--border);
+  color: var(--text-soft);
+  padding: 6px 12px;
   border-radius: 999px;
+  font-size: 15px;
   font-weight: 700;
-}
-.booking-badge--accent {
-  background: rgba(20, 184, 166, 0.16);
-  border-color: rgba(20, 184, 166, 0.35);
+  white-space: nowrap;
 }
 
-.divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.12);
-  margin: 10px 0;
+.booking-badge--accent {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .booking-alert {
-  border: 1px solid rgba(251, 113, 133, 0.35);
-  background: rgba(251, 113, 133, 0.1);
-  color: rgba(255, 255, 255, 0.88);
+  border: 2px solid var(--warn);
+  background: var(--warn-soft);
+  color: var(--warn-ink);
   border-radius: 14px;
+  padding: 14px;
+  font-size: 17px;
 }
 
-.booking-modal__footer {
-  border-top: 1px solid var(--border);
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-  gap: 10px;
-}
-.booking-btn {
-  border-radius: 12px;
-  padding: 10px 14px;
-}
-.booking-btn--primary {
-  background: rgba(20, 184, 166, 0.25);
-  border-color: rgba(20, 184, 166, 0.55);
-}
-.booking-btn--primary:hover {
-  background: rgba(20, 184, 166, 0.32);
-}
-.booking-btn--success {
-  background: rgba(34, 197, 94, 0.22);
-  border-color: rgba(34, 197, 94, 0.4);
+.apartment-alert {
+  border: 2px solid var(--danger);
+  background: var(--danger-soft);
+  color: var(--danger-dark);
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 17px;
+  font-weight: 700;
 }
 
-.modal-booking,
-:is(#bookingFormModal, #bookingEditModal) .modal-content {
-  color: var(--text);
+.booking-modal--danger .booking-modal__header {
+  border-bottom-color: var(--danger);
 }
 
+.cancel-icon {
+  font-size: 34px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Campos dentro de los modales */
 :is(#bookingFormModal, #bookingEditModal) .modal-title,
 :is(#bookingFormModal, #bookingEditModal) .section-title,
 :is(#bookingFormModal, #bookingEditModal) .form-label {
@@ -549,76 +932,290 @@ body {
 }
 
 :is(#bookingFormModal, #bookingEditModal) .text-muted,
-:is(#bookingFormModal, #bookingEditModal) small.text-muted {
+:is(#bookingFormModal, #bookingEditModal) small.text-muted,
+:is(#bookingFormModal, #bookingEditModal) .text-muted-dark {
   color: var(--muted) !important;
 }
 
-:is(#bookingFormModal, #bookingEditModal).form-control,
+:is(#bookingFormModal, #bookingEditModal) .form-control,
 :is(#bookingFormModal, #bookingEditModal) .form-select,
-:is(#bookingFormModal, #bookingEditModal) textarea {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+:is(#bookingFormModal, #bookingEditModal) textarea,
+:is(#bookingFormModal, #bookingEditModal) select.form-select {
+  background: var(--surface) !important;
+  border: 2px solid var(--border-strong) !important;
   color: var(--text) !important;
+  border-radius: 12px;
 }
 
 :is(#bookingFormModal, #bookingEditModal) .form-control::placeholder,
 :is(#bookingFormModal, #bookingEditModal) textarea::placeholder {
-  color: rgba(255, 255, 255, 0.45) !important;
+  color: #7d786d !important;
 }
 
 :is(#bookingFormModal, #bookingEditModal) .input-group-text {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  color: var(--text) !important;
+  background: var(--surface-2) !important;
+  border: 2px solid var(--border-strong) !important;
+  border-right: 0 !important;
+  color: var(--text-soft) !important;
 }
 
 :is(#bookingFormModal, #bookingEditModal) .form-control:focus,
 :is(#bookingFormModal, #bookingEditModal) .form-select:focus {
-  border-color: rgba(20, 184, 166, 0.55) !important;
-  box-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.18) !important;
-}
-
-:is(#bookingFormModal, #bookingEditModal) .text-muted-dark {
-  color: rgba(255, 255, 255, 0.7) !important;
+  border-color: var(--accent-2) !important;
+  box-shadow: 0 0 0 0.25rem rgba(27, 79, 138, 0.18) !important;
 }
 
 :is(#bookingFormModal, #bookingEditModal) select.form-select {
-  background-color: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  color: var(--text) !important;
-  border-radius: 12px;
-  padding-right: 38px;
-}
-
-:is(#bookingFormModal, #bookingEditModal) select.form-select {
+  padding-right: 42px;
   background-image:
-    linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.7) 50%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.7) 50%, transparent 50%);
+    linear-gradient(45deg, transparent 50%, var(--text) 50%),
+    linear-gradient(135deg, var(--text) 50%, transparent 50%);
   background-position:
-    calc(100% - 18px) calc(50% - 3px),
-    calc(100% - 12px) calc(50% - 3px);
-  background-size: 6px 6px;
+    calc(100% - 20px) calc(50% - 3px),
+    calc(100% - 14px) calc(50% - 3px);
+  background-size: 7px 7px;
   background-repeat: no-repeat;
 }
 
-:is(#bookingFormModal, #bookingEditModal) select.form-select:hover {
-  background-color: rgba(255, 255, 255, 0.09) !important;
-}
-
-:is(#bookingFormModal, #bookingEditModal) select.form-select:focus {
-  border-color: rgba(20, 184, 166, 0.6) !important;
-  box-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.18) !important;
-  outline: none;
-}
-
 :is(#bookingFormModal, #bookingEditModal) select.form-select option {
-  background: #0b1220;
+  background: var(--surface);
   color: var(--text);
-  padding: 8px;
+  padding: 10px;
 }
 
-:is(#bookingFormModal, #bookingEditModal) select.form-select option:checked,
-:is(#bookingFormModal, #bookingEditModal) select.form-select option:hover {
-  background: linear-gradient(90deg, rgba(20, 184, 166, 0.35), rgba(167, 139, 250, 0.25));
-  color: #fff;
+/* ============================ Menú desplegable de exportar ============================ */
+
+.dropdown-menu,
+.dropdown-menu-dark {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 8px 28px rgba(27, 26, 23, 0.18);
+}
+
+.dropdown-menu .dropdown-item,
+.dropdown-menu-dark .dropdown-item {
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px 12px;
+  white-space: normal;
+}
+
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu-dark .dropdown-item:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.dropdown-divider {
+  border-color: var(--border);
+}
+
+/* ============================ Calendario (FullCalendar) ============================ */
+
+.fc {
+  font-size: 16px;
+}
+
+.fc .fc-toolbar-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.fc .fc-button,
+.fc .fc-button-primary {
+  min-height: 48px;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: capitalize;
+  padding: 8px 14px;
+  box-shadow: none;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #ffffff;
+}
+
+.fc .fc-button-primary:disabled {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--muted);
+  opacity: 1;
+}
+
+.fc .fc-col-header-cell-cushion {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 8px 4px;
+}
+
+.fc .fc-daygrid-day-number {
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 700;
+  padding: 6px 8px;
+}
+
+.fc .fc-daygrid-day {
+  min-height: 56px;
+}
+
+.fc .fc-day-today {
+  background: var(--surface-2) !important;
+}
+
+.fc .fc-event,
+.fc .fc-daygrid-event {
+  background: var(--accent);
+  border: 2px solid var(--accent-dark);
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fc .fc-event-title {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid td,
+.fc .fc-scrollgrid th {
+  border-color: var(--border-soft);
+}
+
+/* ============================ Responsive ============================ */
+
+@media (max-width: 1199.98px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .app-sidebar {
+    width: 100%;
+    border-right: 0;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .app-sidebar .nav {
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .calc-layout {
+    flex-direction: column;
+  }
+
+  .calc-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  body {
+    font-size: 17px;
+  }
+
+  .app-main {
+    padding: 14px 12px 32px;
+  }
+
+  .brand-title {
+    font-size: 20px;
+  }
+
+  .app-header .ms-auto {
+    gap: 8px !important;
+  }
+
+  /* En el teléfono, un botón por renglón: así ninguno tapa al otro. */
+  .booking-modal__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .booking-modal__footer .booking-btn {
+    width: 100%;
+    margin: 0;
+  }
+
+  .modal-dialog {
+    margin: 10px;
+  }
+
+  .calc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fc .fc-toolbar.fc-header-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fc .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 400px) {
+  .brand-title {
+    font-size: 19px;
+  }
+
+  .app-pill-btn {
+    padding: 8px 12px;
+  }
+}
+
+/* Respeta a quien pidió menos movimiento en el sistema. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Color de las reservas en el calendario, en sintonía con la leyenda.
+   La clase la pone booking-calendar según el estado. */
+.fc .fc-event.ca-event--active,
+.fc .fc-daygrid-event.ca-event--active {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #ffffff;
+}
+
+.fc .fc-event.ca-event--pending,
+.fc .fc-daygrid-event.ca-event--pending {
+  background: var(--warn);
+  border-color: #7a4705;
+  color: #ffffff;
 }

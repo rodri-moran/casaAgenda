@@ -1,22 +1,25 @@
-<div class="d-flex justify-content-end mb-4">
-  <button
-    class="btn btn-outline-light align-items-end booking-btn"
-    [routerLink]="['/crearDepartamento']"
-  >
-    Nuevo departamento
-  </button>
-</div>
-<div class="row g-3 justify-content-center">
+<h1 class="page-title">Departamentos</h1>
+
+<a class="add-btn" [routerLink]="['/crearDepartamento']">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 5v14M5 12h14" />
+  </svg>
+  Agregar departamento
+</a>
+
+<div class="row g-3">
   @if (apartments$ | async; as apartments) {
     @if (apartments.length === 0) {
-      <div class="text-center text-white mt-5">No hay departamentos</div>
+      <div class="empty-state">
+        <p class="empty-state__title">Todavía no cargaste ningún departamento</p>
+        <p class="empty-state__sub">Tocá "Agregar departamento" para cargar el primero.</p>
+      </div>
     } @else {
       @for (apt of apartments; track apt.id) {
-        <div class="col-md-6">
+        <div class="col-12 col-lg-6">
           <app-apartment-card [apartment]="apt" (open)="goToBookings($event)"></app-apartment-card>
         </div>
       }
     }
   }
 </div>
-<!-- (open)="goToDetail($event)"> -->

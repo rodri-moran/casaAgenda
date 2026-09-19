@@ -1,9 +1,15 @@
 .toast {
+  border: 2px solid var(--border-strong);
   border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  box-shadow: 0 10px 30px rgba(27, 26, 23, 0.2);
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .toast-body {
   display: flex;
   align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  overflow-wrap: anywhere;
 }
