@@ -22,6 +22,9 @@ export class AuthService {
    * traer los departamentos, sirven para todo lo demás.
    */
   login(username: string, password: string): Observable<boolean> {
+    // Nos aseguramos de no arrastrar un login anterior guardado.
+    this.logout();
+
     const basicAuth = 'Basic ' + btoa(`${username}:${password}`);
 
     return this.http

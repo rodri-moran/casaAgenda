@@ -8,10 +8,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const authHeader = authService.getAuthHeader();
-  const authReq = authHeader
-    ? req.clone({ setHeaders: { Authorization: authHeader } })
-    : req;
+  // Si el request ya trae su propio header de autenticación (por ejemplo,
+  // el intento de login probando credenciales nuevas), no lo pisamos con
+  // lo que haya guardado de una sesión anterior.
+  const storedAuthHeader = authService.getAuthHeader();
+  const authReq =
+    !req.headers.has('Authorization') && storedAuthHeader
+      ? req.clone({ setHeaders: { Authorization: storedAuthHeader } })
+      : req;
 
   return next(authReq).pipe(
     catchError((err) => {
