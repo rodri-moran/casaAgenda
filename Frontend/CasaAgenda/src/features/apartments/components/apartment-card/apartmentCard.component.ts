@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   standalone: true,
   selector: 'app-apartment-card',
-  styleUrls: ['./apartmentCard.Component.css'],
+  styleUrls: ['./apartmentCard.component.css'],
   imports: [CommonModule],
   template: ` <div class="card apartment-card">
     <img
