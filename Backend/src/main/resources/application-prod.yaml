@@ -4,6 +4,14 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+    # Pool de conexiones pensado para Neon (plan gratuito, scale-to-zero a los 5 min):
+    # si no hay uso, se cierran todas las conexiones y no se hacen pings,
+    # asi la base puede suspenderse y no consume horas de compute.
+    hikari:
+      minimum-idle: 0
+      idle-timeout: 60000
+      keepalive-time: 0
+      maximum-pool-size: 5
   jpa:
     hibernate:
       ddl-auto: update
