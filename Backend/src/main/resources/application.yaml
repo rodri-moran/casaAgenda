@@ -1,4 +1,8 @@
 spring:
+  # data.sql carga departamentos y reservas de ejemplo en H2 al arrancar
+  sql:
+    init:
+      encoding: UTF-8
   application:
     name: Casa Agenda
   datasource:
