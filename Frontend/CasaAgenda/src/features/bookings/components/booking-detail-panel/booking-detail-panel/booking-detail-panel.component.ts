@@ -1,6 +1,5 @@
 import {
   Component,
-  computed,
   ElementRef,
   EventEmitter,
   inject,
@@ -45,15 +44,19 @@ export class BookingDetailPanelComponent implements OnInit {
   @Output() cancelled = new EventEmitter<BookingResponseDto>();
   @Output() export = new EventEmitter<BookingResponseDto>();
 
-  title = computed(() => this.apartment?.name ?? `Depto #${this.booking?.apartmentId ?? '—'}`);
+  // Funciones y no computed(): `booking` es un @Input común (no un signal), así que un
+  // computed() se quedaba con los datos de la primera reserva al tocar otra.
+  title = () => this.apartment?.name ?? `Depto #${this.booking?.apartmentId ?? '—'}`;
 
-  nights = computed(() => this.calc.calcNights(this.booking.checkIn, this.booking.checkOut));
-  days = computed(() => this.nights() + 1);
-  priceNight = computed(() =>
-    this.calc.calcPriceNight(this.booking.pricePerPerson, this.booking.people),
-  );
-  total = computed(() => this.calc.calcTotal(this.priceNight(), this.nights()));
-  remaining = computed(() => this.calc.calcRemaining(this.total(), this.booking.deposit));
+  nights = () => this.calc.calcNights(this.booking.checkIn, this.booking.checkOut);
+  days = () => this.nights() + 1;
+  priceNight = () => this.calc.calcPriceNight(this.booking.pricePerPerson, this.booking.people);
+  total = () => this.calc.calcTotal(this.priceNight(), this.nights());
+  remaining = () => this.calc.calcRemaining(this.total(), this.booking.deposit);
+
+  // Montos con punto de miles, como se escriben en Argentina: $ 375.000
+  money = (n: number | null | undefined) =>
+    '$ ' + Number(n ?? 0).toLocaleString('es-AR', { maximumFractionDigits: 2 });
 
   // helpers simples para mostrar fechas mas esteticas sin librerias
   fmt = (iso: string | null | undefined) => (iso ? iso.split('-').reverse().join('/') : '—');
@@ -121,13 +124,13 @@ export class BookingDetailPanelComponent implements OnInit {
     return `*Nombre=* ${b.guestName}
 *Departamento=* ${apt}
 *Fecha=* ${b.checkIn} al ${b.checkOut}
-*Total=* $${b.total}
-*Seña=* $${b.deposit}
-*Resto=* $${b.remaining}
+*Total=* ${this.money(b.total)}
+*Seña=* ${this.money(b.deposit)}
+*Resto=* ${this.money(b.remaining)}
 *Días=* ${this.nights() + 1}
 *Noches=* ${this.nights()}
 *Personas=* ${b.people}
-* x Noche=* $${this.priceNight()}
+* x Noche=* ${this.money(this.priceNight())}
 `;
   }
 
@@ -341,22 +344,22 @@ export class BookingDetailPanelComponent implements OnInit {
 
       <div class="box">
         <div class="k">Precio por noche</div>
-        <div class="v money">$${safe(b.priceNight)}</div>
+        <div class="v money">${this.money(b.priceNight)}</div>
       </div>
 
       <div class="box">
         <div class="k">Total</div>
-        <div class="v money">$${safe(b.total)}</div>
+        <div class="v money">${this.money(b.total)}</div>
       </div>
 
       <div class="box">
         <div class="k">Seña / Depósito</div>
-        <div class="v money">$${safe(b.deposit)}</div>
+        <div class="v money">${this.money(b.deposit)}</div>
       </div>
 
       <div class="box full">
         <div class="k">Restante</div>
-        <div class="v money accent">$${safe(b.remaining)}</div>
+        <div class="v money accent">${this.money(b.remaining)}</div>
       </div>
     </div>
 

@@ -1,6 +1,6 @@
 <div class="container py-3">
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-9">
+    <div class="col-12 col-lg-7">
       <div class="apartment-panel">
         <!-- Header -->
         <div class="apartment-panel__header">
@@ -23,8 +23,8 @@
         <div class="apartment-panel__body">
           <form [formGroup]="apartmentForm" (ngSubmit)="onSubmit()">
             <div class="row g-3">
-              <!-- Col izquierda -->
-              <div class="col-12 col-lg-6">
+              <!-- Datos -->
+              <div class="col-12">
                 <div class="section-card">
                   <div class="section-title d-flex align-items-center gap-2">
                     <span class="dot dot--accent2"></span>
@@ -91,38 +91,9 @@
                 </div>
               </div>
 
-              <!-- Col derecha -->
-              <div class="col-12 col-lg-6">
-                <div class="section-card">
-                  <div class="section-title d-flex align-items-center gap-2">
-                    <span class="dot dot--accent"></span>
-                    Imagen
-                  </div>
-
-                  <label class="form-label fw-semibold">Link de la foto (no es obligatorio)</label>
-
-                  <input
-                    type="text"
-                    class="form-control form-control-sm apartment-input"
-                    formControlName="imageUrl"
-                    placeholder="Pegá acá el link de la foto"
-                  />
-
-                  <!-- Preview -->
-                  @if (apartmentForm.get('imageUrl')?.value) {
-                    <div class="apartment-preview mt-3">
-                      <div class="apartment-preview__img">
-                        <img [src]="apartmentForm.get('imageUrl')?.value" alt="Preview" />
-                      </div>
-                      <div class="apartment-preview__meta">
-                        <div class="fw-semibold">Vista previa</div>
-                        <div class="text-muted-custom small">Así se va a ver la foto.</div>
-                      </div>
-                    </div>
-                  }
-                </div>
-
-                <div class="d-flex justify-content-end gap-2 mt-3">
+              <!-- Botones -->
+              <div class="col-12">
+                <div class="d-flex justify-content-end gap-2">
                   <button
                     type="submit"
                     class="btn btn-success apartment-btn apartment-btn--success"

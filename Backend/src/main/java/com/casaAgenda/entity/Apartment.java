@@ -26,8 +26,6 @@ public class Apartment {
     @Nullable
     private String description;
     private Integer capacity;
-    @Nullable
-    private String imageUrl;
 //    @Column(nullable = false)
 //    private boolean active;
 }

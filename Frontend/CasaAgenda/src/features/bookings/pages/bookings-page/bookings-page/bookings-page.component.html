@@ -2,38 +2,33 @@
   <h1 class="page-title">Reservas</h1>
 
   <button class="btn btn-success bookings-new" data-bs-toggle="modal" data-bs-target="#bookingFormModal">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M12 5v14M5 12h14" />
     </svg>
-    Anotar una reserva
+    Anotar reserva
   </button>
 </div>
 
 <div class="row g-3">
-  <div class="col-12 col-md-4 col-xl-3">
-    <h2 class="step-title">1. Elegí el departamento</h2>
-
-    <div class="list-group list-group-flush deptos-list">
-      @for (apt of (apartments$ | async) ?? []; track apt.id) {
-        <button
-          type="button"
-          class="list-group-item list-group-item-action btn-select"
-          (click)="selectedApartmentId = apt.id"
-          [class.active]="selectedApartmentId === apt.id"
-        >
-          {{ apt.name }}
-        </button>
-      }
+  <div class="col-12 col-lg-8 bookings-main">
+    <div class="depto-picker">
+      <label for="deptoSelect" class="depto-picker__label">Departamento</label>
+      <select
+        id="deptoSelect"
+        class="form-select depto-select"
+        [disabled]="apartments().length === 0"
+        (change)="selectApartment($any($event.target).value)"
+      >
+        @for (apt of apartments(); track apt.id) {
+          <option [value]="apt.id" [selected]="apt.id === selectedApartmentId()">{{ apt.name }}</option>
+        }
+      </select>
     </div>
-  </div>
 
-  <div class="col-12 col-md-8 col-xl-9">
-    <h2 class="step-title">2. Tocá una reserva del calendario</h2>
-
-    <div class="card p-3">
-      <ng-container *ngIf="selectedApartmentId; else emptyState">
+    <div class="card calendar-card">
+      @if (selectedApartmentId()) {
         <app-booking-calendar
-          [bookings]="filteredBookings"
+          [bookings]="filteredBookings()"
           (selectedBooking)="selectedBookingId.set($event)"
         ></app-booking-calendar>
 
@@ -46,39 +41,69 @@
             <span class="legend-swatch legend-swatch--pending"></span>
             Vienen pronto
           </span>
-          <span class="legend-note">
-            Las reservas que ya terminaron o que cancelaste no aparecen acá.
-          </span>
+          <span class="legend-note">Tocá una reserva para ver todos sus datos.</span>
         </div>
-      </ng-container>
-
-      <ng-template #emptyState>
-        <div class="calendar-empty">Elegí un departamento de la lista para ver sus reservas.</div>
-      </ng-template>
+      } @else {
+        <div class="calendar-empty">Todavía no hay departamentos cargados.</div>
+      }
     </div>
+
+    @if (selectedApartmentId()) {
+      <section class="upcoming" aria-labelledby="upcomingTitle">
+        <h2 class="upcoming__title" id="upcomingTitle">Próximas en este departamento</h2>
+
+        @for (b of upcoming(); track b.id) {
+          <button
+            type="button"
+            class="upcoming-item"
+            [class.upcoming-item--selected]="b.id === selectedBookingId()"
+            (click)="selectedBookingId.set(b.id)"
+          >
+            <span class="upcoming-item__body">
+              <span class="upcoming-item__guest">{{ b.guestName || 'Sin nombre' }}</span>
+              <span class="upcoming-item__dates">
+                {{ shortDate(b.checkIn) }} → {{ shortDate(b.checkOut) }} · {{ nightsLabel(b) }}
+              </span>
+              @if (b.status === Status.ACTIVE) {
+                <span class="upcoming-item__status upcoming-item__status--active">Están acá ahora</span>
+              } @else {
+                <span class="upcoming-item__status upcoming-item__status--pending">Vienen pronto</span>
+              }
+            </span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </button>
+        } @empty {
+          <p class="upcoming__empty">No hay reservas próximas en este departamento.</p>
+        }
+      </section>
+    }
   </div>
 
-  <div class="col-12">
-    @if (selectedBooking(); as b) {
-      <app-booking-detail-panel
-        [booking]="b"
-        [apartment]="selectedApartment()"
-        (edit)="openEditModal($event)"
-        (close)="selectedBookingId.set(null)"
-        (cancelled)="onBookingCancelled($event)"
-      />
-    } @else {
-      <div class="card detail-placeholder">
-        Tocá una reserva del calendario y acá abajo vas a ver todos sus datos.
-      </div>
-    }
+  <div class="col-12 col-lg-4">
+    <div class="detail-column">
+      @if (selectedBooking(); as b) {
+        <app-booking-detail-panel
+          [booking]="b"
+          [apartment]="selectedApartment()"
+          (edit)="openEditModal($event)"
+          (close)="selectedBookingId.set(null)"
+          (cancelled)="onBookingCancelled($event)"
+        />
+      } @else {
+        <div class="card detail-placeholder">
+          Tocá una reserva del calendario o de la lista y acá vas a ver todos sus datos.
+        </div>
+      }
+    </div>
   </div>
 </div>
 
-@if (apartments$ | async; as apartments) {
+@if (apartments().length > 0) {
   <app-booking-form-modal
     (created)="onBookingCreated($event)"
-    [apartments]="apartments"
+    [apartments]="apartments()"
   ></app-booking-form-modal>
 }
 

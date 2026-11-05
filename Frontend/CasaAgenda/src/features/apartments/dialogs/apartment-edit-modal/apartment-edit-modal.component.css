@@ -1,0 +1,47 @@
+.apt-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.apt-edit__input {
+  min-height: var(--tap);
+  font-size: 18px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+}
+
+textarea.apt-edit__input {
+  min-height: 0;
+  font-size: 17px;
+  resize: none;
+}
+
+.apt-edit__stepper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.apt-edit__step {
+  width: var(--tap);
+  height: var(--tap);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.apt-edit__step:hover {
+  background: var(--surface-2);
+}
+
+.apt-edit__count {
+  min-width: 48px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+}

@@ -1,0 +1,68 @@
+<div
+  class="modal fade modal-sheet"
+  id="apartmentEditModal"
+  tabindex="-1"
+  aria-labelledby="apartmentEditLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content booking-modal">
+      <div class="modal-header booking-modal__header">
+        <h5 class="modal-title mb-0" id="apartmentEditLabel">Editar departamento</h5>
+        <button
+          type="button"
+          class="btn-close booking-modal__close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="modal-body booking-modal__body apt-edit">
+          <div>
+            <label for="aptEditName" class="form-label fw-semibold">Nombre</label>
+            <input id="aptEditName" type="text" class="form-control apt-edit__input" formControlName="name" />
+            @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+              <div class="text-danger small mt-1">Falta poner el nombre</div>
+            }
+            @if (form.controls.name.touched && form.controls.name.hasError('maxlength')) {
+              <div class="text-danger small mt-1">Como mucho 60 letras</div>
+            }
+          </div>
+
+          <div>
+            <span id="aptEditCapLabel" class="form-label fw-semibold d-block">¿Cuántas personas entran?</span>
+            <div class="apt-edit__stepper" role="group" aria-labelledby="aptEditCapLabel">
+              <button type="button" class="apt-edit__step" aria-label="Una persona menos" (click)="changeCapacity(-1)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>
+              </button>
+              <output class="apt-edit__count" aria-live="polite">{{ form.controls.capacity.value }}</output>
+              <button type="button" class="apt-edit__step" aria-label="Una persona más" (click)="changeCapacity(1)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label for="aptEditDesc" class="form-label fw-semibold">
+              Descripción <span class="fw-normal text-muted-custom">(si querés)</span>
+            </label>
+            <textarea id="aptEditDesc" rows="3" class="form-control apt-edit__input" formControlName="description"></textarea>
+            @if (form.controls.description.touched && form.controls.description.hasError('maxlength')) {
+              <div class="text-danger small mt-1">Como mucho 150 letras</div>
+            }
+          </div>
+        </div>
+
+        <div class="modal-footer booking-modal__footer">
+          <button type="button" class="btn btn-outline-light booking-btn" data-bs-dismiss="modal">
+            Volver sin guardar
+          </button>
+          <button type="submit" class="btn btn-success booking-btn" [disabled]="saving">
+            {{ saving ? 'Guardando…' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

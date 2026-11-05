@@ -29,7 +29,6 @@ public class ApartmentServiceImpl implements ApartmentService {
                 .name(dto.name())
                 .description(dto.description())
                 .capacity(dto.capacity())
-                .imageUrl(dto.imageUrl())
 //              .active(true)
                 .build();
 
@@ -49,9 +48,6 @@ public class ApartmentServiceImpl implements ApartmentService {
         }
         if(dto.capacity() != null){
             apartment.setCapacity(dto.capacity());
-        }
-        if(dto.imageUrl() != null && !dto.imageUrl().isBlank()){
-            apartment.setImageUrl(dto.imageUrl());
         }
         apartment = apartmentRepository.save(apartment);
 
@@ -103,8 +99,7 @@ public class ApartmentServiceImpl implements ApartmentService {
                 entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
-                entity.getCapacity(),
-                entity.getImageUrl());
+                entity.getCapacity());
 //                entity.isActive());
     }
 

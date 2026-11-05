@@ -27,10 +27,11 @@ export class BookingCalendarComponent implements OnInit {
     initialView: 'dayGridMonth',
     selectable: true,
     height: 'auto',
+    // Una sola vista (mes): flechas a los costados del título y "Hoy" a la derecha.
     headerToolbar: {
-      left: 'prev,next today',
+      left: 'prev',
       center: 'title',
-      right: 'dayGridMonth',
+      right: 'today next',
     },
     events: [],
     eventClick: (info: any) => {

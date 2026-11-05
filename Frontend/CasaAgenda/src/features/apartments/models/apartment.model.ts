@@ -3,5 +3,4 @@ export interface Apartment {
   name: string;
   description?: string;
   capacity: number;
-  imageUrl?: string;
 }

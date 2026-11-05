@@ -509,3 +509,83 @@
   color: var(--text-soft);
   margin: 0;
 }
+
+/* ======================= Detalle como panel desde abajo =======================
+   En compu (≥ 992px) el detalle queda al costado del calendario.
+   En teléfono y tablet sube desde abajo, tapando el calendario, para que
+   se vea apenas se toca una reserva sin tener que scrollear.
+   Los modales de cancelar / cambiar datos quedan por encima (z-index 1050+). */
+
+.detail-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+}
+
+.detail-backdrop,
+.detail-grabber {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .detail-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1040;
+    background: rgba(27, 26, 23, 0.5);
+    animation: detail-fade 0.2s ease-out;
+  }
+
+  .detail-card {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1041;
+    max-width: 640px;
+    margin: 0 auto;
+    max-height: 88vh;
+    max-height: 88dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-bottom: 0;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 10px 16px calc(16px + env(safe-area-inset-bottom)) !important;
+    box-shadow: 0 -8px 30px rgba(27, 26, 23, 0.25);
+    animation: detail-up 0.25s ease-out;
+  }
+
+  .detail-grabber {
+    display: block;
+    width: 48px;
+    height: 5px;
+    margin: 0 auto 10px;
+    border-radius: 3px;
+    background: var(--border);
+  }
+
+  /* En el panel de abajo no hace falta: se cierra y se toca otra. */
+  .detail-card .hint {
+    display: none;
+  }
+}
+
+@keyframes detail-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes detail-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1174,15 +1174,31 @@ textarea.form-control-sm {
     grid-template-columns: 1fr;
   }
 
+  /* Flecha | mes | Hoy + flecha, todo en un solo renglón para no gastar pantalla. */
   .fc .fc-toolbar.fc-header-toolbar {
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
   }
 
   .fc .fc-toolbar-chunk {
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .fc .fc-toolbar-chunk .fc-button {
+    min-height: 44px;
+    padding: 6px 10px;
+  }
+
+  .fc .fc-toolbar-title {
+    text-align: center;
+    line-height: 1.15;
   }
 }
 
@@ -1213,9 +1229,104 @@ textarea.form-control-sm {
   color: #ffffff;
 }
 
+/* "Vienen pronto": relleno claro con borde, así se distingue del verde lleno
+   también por lo claro/oscuro y no solo por el color. */
 .fc .fc-event.ca-event--pending,
 .fc .fc-daygrid-event.ca-event--pending {
-  background: var(--warn);
-  border-color: #7a4705;
-  color: #ffffff;
+  background: var(--warn-soft);
+  border-color: var(--warn);
+  color: var(--warn-ink);
+}
+
+.fc .ca-event--pending .fc-event-main,
+.fc .ca-event--pending .fc-event-title {
+  color: var(--warn-ink);
+}
+
+/* En el teléfono las barras del calendario van en una sola línea,
+   así una reserva con nombre largo no estira toda la semana. */
+@media (max-width: 767.98px) {
+  .fc .fc-event,
+  .fc .fc-daygrid-event {
+    padding: 1px 4px;
+    font-size: 13px;
+  }
+
+  .fc .fc-event-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 20px !important;
+  }
+
+  .fc .fc-daygrid-day-number {
+    font-size: 15px;
+    padding: 2px 4px;
+  }
+
+  /* Semanas más bajas: entra el mes entero y se ve la lista de abajo. */
+  .fc .fc-daygrid-day-events {
+    min-height: 22px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .fc .fc-daygrid-day {
+    min-height: 0;
+  }
+
+  .fc .fc-col-header-cell-cushion {
+    font-size: 14px;
+    padding: 6px 2px;
+  }
+}
+
+/* "noviembre de 2026" → "Noviembre de 2026" */
+.fc .fc-toolbar-title::first-letter {
+  text-transform: uppercase;
+}
+
+/* Los números de día y de semana no son links para tocar: sin subrayado. */
+.fc a {
+  text-decoration: none;
+}
+
+/* ============================ Modal tipo "panel de abajo" ============================
+   En el teléfono, los modales con .modal-sheet suben desde abajo y ocupan el ancho. */
+@media (max-width: 575.98px) {
+  .modal-sheet .modal-dialog {
+    margin: 0;
+    min-height: 100%;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .modal-sheet .modal-content,
+  .modal-sheet .modal-content.booking-modal {
+    border-radius: 24px 24px 0 0;
+    border-bottom: 0;
+  }
+
+  .modal-sheet.fade .modal-dialog {
+    transform: translateY(100%);
+    transition: transform 0.25s ease-out;
+  }
+
+  .modal-sheet.show .modal-dialog {
+    transform: none;
+  }
+
+  .modal-sheet .modal-footer {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Mientras el detalle de una reserva está abierto como panel de abajo,
+   la página de atrás no se scrollea. */
+@media (max-width: 991.98px) {
+  body.detail-sheet-open {
+    overflow: hidden;
+  }
 }

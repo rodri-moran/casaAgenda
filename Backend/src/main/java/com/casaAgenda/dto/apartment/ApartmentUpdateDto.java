@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Positive;
 public record ApartmentUpdateDto(String name,
                                  String description,
                                  @Positive(message = "La capacidad debe ser mayor a 0")
-                                 Integer capacity,
-                                 String imageUrl
+                                 Integer capacity
                                  ) {
 }

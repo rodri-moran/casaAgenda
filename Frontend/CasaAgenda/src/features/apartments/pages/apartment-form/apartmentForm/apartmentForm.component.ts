@@ -26,7 +26,6 @@ export class ApartmentFormComponent implements OnInit {
     name: ['', [Validators.required]],
     description: ['', [Validators.required, Validators.maxLength(150)]],
     capacity: [1, [Validators.min(1)]],
-    imageUrl: [''],
   });
 
   constructor(

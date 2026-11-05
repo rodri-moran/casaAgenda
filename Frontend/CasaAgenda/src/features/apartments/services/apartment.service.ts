@@ -4,6 +4,7 @@ import { Apartment } from '../models/apartment.model';
 import { Observable } from 'rxjs';
 import { ApartmentResponseDto } from '../models/apartmentResponseDto';
 import { ApartmentCreateDto } from '../models/apartmentCreateDto';
+import { ApartmentUpdateDto } from '../models/apartmentUpdateDto';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -20,5 +21,9 @@ export class ApartmentService {
 
   create(dto: ApartmentCreateDto): Observable<ApartmentResponseDto> {
     return this.http.post<ApartmentResponseDto>(this.baseUrl, dto);
+  }
+
+  update(id: number, dto: ApartmentUpdateDto): Observable<ApartmentResponseDto> {
+    return this.http.patch<ApartmentResponseDto>(`${this.baseUrl}/${id}`, dto);
   }
 }
